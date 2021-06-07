@@ -11,7 +11,7 @@ echo $LOG_FILE_PATH > "$TASKS_DIR/taillogs.d/01-app-log.conf"
 source "$PYTHONPATH/activate" && {
 # log which migrations have already been applied
 python manage.py showmigrations;
-
+printenv
 # migrate
 python manage.py makemigrations;
 python manage.py migrate --noinput;
