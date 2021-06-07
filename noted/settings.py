@@ -44,14 +44,14 @@ else:
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'django_rest',
             'USER': 'djangoadmin',
-            'PASSWORD': 'django@321',
+            'PASSWORD': os.environ['DB_PASSWORD'],
             'HOST': 'localhost',
             'PORT': '5432',
         }
     }
 
 ALLOWED_HOSTS = [
-    'carded-dev-env.eba-k6sru9ub.eu-west-2.elasticbeanstalk.com',
+    'carded-django-dev.eu-west-2.elasticbeanstalk.com',
     '127.0.0.1',
 ]
 
