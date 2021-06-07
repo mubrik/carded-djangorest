@@ -147,7 +147,6 @@ cython_debug/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
-01_envvar.config
 
 # files i need hidden
 .unregister/
