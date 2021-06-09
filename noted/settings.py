@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'notes.apps.NotesConfig',
     'notebooks.apps.NotebooksConfig',
+    'frontend.apps.FrontendConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -84,12 +85,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'corsheaders',
-]
-
-INTERNAL_IPS = [
-    # ...
-    '127.0.0.1',
-    # ...
 ]
 
 MIDDLEWARE = [
@@ -195,7 +190,7 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 CORS_ALLOWED_ORIGINS = [
     # update after getting domain
-    "http://localhost:3000",
+    "http://127.0.0.1:8000",
 ]
 
 PASSWORD_HASHERS = [
