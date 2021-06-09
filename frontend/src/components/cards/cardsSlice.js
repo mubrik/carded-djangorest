@@ -65,7 +65,7 @@ export const removeCard = createAsyncThunk('cards/removeCard', async (params, {g
 
     let response;
     try {
-        let url = `notes/${params}`
+        let url = `notes/${params}/`
         response = await apiFecthResource.remove(url)
         const {cards} = getState()
         let deletedCard = cards.entities[params]

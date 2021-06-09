@@ -112,7 +112,7 @@ const createAuthProvider = () => {
             let token = `Token ${tokenObj ? tokenObj['key'] : ''}`
 
             axiosInstance.defaults.headers.common['Authorization'] = token
-
+            axiosInstance.defaults.headers.common['Accept'] = 'application/json'
         }
 
         const get = async (url, data) => {

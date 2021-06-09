@@ -53,34 +53,6 @@ function PrivateRoute({ children, ...rest }) {
     );
 }
 
-/* function PublicRoute({ children, ...rest }) {
-    let isAuthenticated = useAuth();
-    // notificantion
-    const { enqueueSnackbar } = useSnackbar();
-    // React
-    React.useEffect(() => {
-        if (isAuthenticated) {
-            enqueueSnackbar('welcome', {variant: 'info', persist: false,})
-        }
-    }, [isAuthenticated, enqueueSnackbar])
-
-    return (
-      <Route
-        {...rest}
-        render={({ location }) =>
-            isAuthenticated ? (
-                <Redirect
-                to={{
-                    pathname: "/login",
-                    state: { from: location }
-                }}
-                />
-            ) : (children)
-        }
-      />
-    );
-} */
-
 function App() {
 
     let isAuthenticated = useAuth();

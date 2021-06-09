@@ -1,16 +1,25 @@
 import React from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import { Typography } from '@material-ui/core';
 import {selectDeckById, selectActiveDeck, selectDeckTotal} from './deckSlice'
+import {selectCardsStatus, fetchCards} from '../cards/cardsSlice'
 import {useCardsCreator} from '../hooks/customHooks'
 
 const DeckCardSection = (props) => {
 
     // redux
+    const dispatch = useDispatch()
     const activeDeck = useSelector(selectActiveDeck)
+    const cardsStatus = useSelector(selectCardsStatus)
     const totalDeckNum = useSelector(selectDeckTotal)
     const singleDeck = useSelector((state) => selectDeckById(state, activeDeck))
     const cardsArray = useCardsCreator(singleDeck ? singleDeck.notebook_notes : null)
+
+    React.useEffect(() => {
+        if (cardsStatus === "stale") {
+            dispatch(fetchCards())
+        }
+    }, [cardsStatus])
 
     if (activeDeck === null && totalDeckNum > 0 ) {
         return (

@@ -5,9 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Button from '@material-ui/core/Button';
-import { useAuth} from '../../api/api'
+import LogoComponent from './LogoComponent'
+import {useAuth} from '../../api/api'
 import {useDispatch} from 'react-redux'
 import {fetchCards} from '../cards/cardsSlice'
 import {fetchDecks} from '../decks/deckSlice'
@@ -202,10 +201,7 @@ const HeaderBar = (props) => {
                 >
                     <MenuIcon />
                 </IconButton>
-                <img 
-                className={classes.headerImg}
-                alt={'title'}
-                src={'/assets/images/lOGOBIG.png'}/>
+                <LogoComponent/>
                 { isAuthenticated && 
                 <>
                     <div className={classes.sectionMobile}>
@@ -222,14 +218,6 @@ const HeaderBar = (props) => {
                     </div>
                     <div className={classes.sectionDesktop}>
                         <DarkModeSwitch/>
-                        <Button
-                            variant="contained"
-                            startIcon={<ExitToAppIcon/>}
-                            className={classes.navButton}
-                            onClick={() => handleTestClick()}
-                        >
-                            Test sction
-                        </Button>
                         <AccountNavButton className={classes.navButton}/>
                     </div>
                 </>

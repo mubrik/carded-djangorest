@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import IconButton from '@material-ui/core/IconButton';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+import { useSnackbar } from 'notistack';
 import ClearIcon from '@material-ui/icons/Clear';
 import {selectAllCards} from '../cards/cardsSlice'
 import {updateDeckCards, selectActiveDeck, selectCardsByDeckId} from './deckSlice'
@@ -50,12 +51,25 @@ const DeckListForm = (props) => {
     const [removeList, setRemoveList] = React.useState(true);
     // material
     const classes = useStyles();
+    // notification
+    const { enqueueSnackbar } = useSnackbar();
     
     const handleUpdate = () => {
         dispatch(updateDeckCards({
             deckId: selectedDeckId,
             cards: checked.concat(deckCardsArrayById)
-        }));
+        }))
+        .then((result) => {
+            if (result.meta.requestStatus === 'fulfilled') {
+                enqueueSnackbar('Deck Updated', { 
+                    variant: 'success',
+                });
+            } else {
+                enqueueSnackbar('Error Updating Deck', { 
+                    variant: 'error',
+                });
+            }
+        })
         setChecked([]);
     }
     
@@ -64,7 +78,18 @@ const DeckListForm = (props) => {
         dispatch(updateDeckCards({
             deckId: selectedDeckId,
             cards: diff
-        }));
+        }))
+        .then((result) => {
+            if (result.meta.requestStatus === 'fulfilled') {
+                enqueueSnackbar('Deck Updated', { 
+                    variant: 'success',
+                });
+            } else {
+                enqueueSnackbar('Error Updating Deck', { 
+                    variant: 'error',
+                });
+            }
+        })
         setDeleteChecked([]);
     }
 

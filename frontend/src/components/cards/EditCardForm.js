@@ -1,9 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import {Container, Form } from 'react-bootstrap';
-import { Button } from '@material-ui/core';
+import { Button, TextField, InputBase } from '@material-ui/core';
+import newCardStyles from './newCardStyles'
 import {useParams, useHistory} from "react-router-dom"
-import { Formik, Field, Form as FormikForm  } from "formik";
+import { useFormik  } from "formik";
 import { useSnackbar } from 'notistack';
 import {editCard, selectCardById,} from './cardsSlice'
 import {selectAllDecks} from '../decks/deckSlice'
@@ -21,6 +21,8 @@ const EditCardForm = (props) => {
     const allDecksList = useSelector(selectAllDecks)
     //notification
     const { enqueueSnackbar } = useSnackbar();
+    // material
+    const classes = newCardStyles();
 
     // custom hook
     const tabledDeck = useCreateDeck(allDecksList)
@@ -33,81 +35,81 @@ const EditCardForm = (props) => {
         currentCardDeck.push({value, label})
     })
 
-    const initialValues = {
-        title: card['title'],
-        content: card['content'],
-        selectedDeck: currentCardDeck,
-        allDeck: tabledDeck,
-        formattedDeck:[]
-    }
+    // formik
+    const formik = useFormik({
+        initialValues: {
+            title: card['title'],
+            content: card['content'],
+            selectedDeck: currentCardDeck,
+            allDeck: tabledDeck,
+            formattedDeck:[]
+        },
+        onSubmit:(values) => {
+            // Do stuff here...
+            const {title, content, formattedDeck} = values;
+            /* alert(JSON.stringify(values, null, 3)); */
+            const requestBody = {
+                id,
+                title,
+                content,
+                notebook: formattedDeck,
+            };
+            dispatch(editCard({id, requestBody}))
+            .then((result) => {
+                if (result.meta.requestStatus === 'fulfilled') {
+                    enqueueSnackbar('Card Updated', { 
+                        variant: 'success',
+                    });
+                    history.goBack()
+                } else {
+                    enqueueSnackbar('Error Updating', { 
+                        variant: 'error',
+                    });
+                }
+            })
+        }
+    })
 
-
-    function onSubmit(values) {
-        // Do stuff here...
-        const {title, content, formattedDeck} = values;
-        /* alert(JSON.stringify(values, null, 3)); */
-        const requestBody = {
-            id,
-            title,
-            content,
-            notebook: formattedDeck,
-        };
-        dispatch(editCard({id, requestBody}))
-        .then((result) => {
-            if (result.meta.requestStatus === 'fulfilled') {
-                enqueueSnackbar('Card Updated', { 
-                    variant: 'success',
-                });
-                history.goBack()
-            } else {
-                enqueueSnackbar('Error Updating', { 
-                    variant: 'error',
-                });
-            }
-        })
-    }
-
-    return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {(props) => (
-            <>
-            <Container fluid>
-                <FormikForm className="baseForm" noValidate>
-                    <Form.Group>
-                        <Form.Label>Title</Form.Label>
-                        <Field
-                        type="text"
-                        id="cardTitle"
-                        className="form-control"
+    return(
+        <>
+            <div className={classes.wrapperMain}>
+                <form className={classes.flex} onSubmit={formik.handleSubmit} noValidate>
+                    <TextField
+                        fullWidth
+                        margin={'dense'}
                         name="title"
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Text</Form.Label>
-                        <Field as="textarea"
-                        id="cardContent"
-                        className="form-control"
+                        id="cardTitle"
+                        label="Title"
+                        color="secondary"
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <TextField
+                        multiline
+                        fullWidth
+                        margin={'dense'}
+                        rows={4}
                         name="content"
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Deck</Form.Label>
-                        <Field 
-                        name='formattedDeck'
-                        selected={props.values.selectedDeck}
-                        data={props.values.allDeck}
-                        component={MyCustomSelect}
-                        />
-                    </Form.Group>
-                    <Button variant="contained" color="secondary" onClick={props.handleSubmit}>
+                        id="cardContent"
+                        label="Content"
+                        color="secondary"
+                        value={formik.values.content}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {/* <InputBase 
+                        name='selectedDeck'
+                        data={formik.values.allDeck}
+                        inputComponent={MyCustomSelect}
+                    /> */}
+                    <Button variant="contained" color="secondary" onClick={formik.handleSubmit}>
                         Update Card
                     </Button>
-                </FormikForm>
-            </Container>
-            </>
-        )}
-        </Formik>
-    );
+                </form>
+            </div>
+        </>
+    )
 }
 
 export default EditCardForm;

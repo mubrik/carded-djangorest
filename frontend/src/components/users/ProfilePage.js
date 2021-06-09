@@ -75,6 +75,18 @@ const useStyles = makeStyles((theme) => ({
     ProfileAvatarBtnGrp: {
         display: 'flex',
         margin: theme.spacing(1)
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: '1em 0.4em'
+    },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        margin: '1em 0.4em'
     }
 }));
 
@@ -140,7 +152,7 @@ const ProfileAvatar = (props) => {
     })
     
     return (
-        <div className={'profile-card'}>
+        <div className={classes.flexColumn}>
             <form className={classes.ProfileAvatarForm}>
                 <input
                     accept="image/*"
@@ -183,7 +195,7 @@ const ProfileCardStatDetail = (props) => {
     const decksTotal = useSelector(selectDeckTotal);
 
     return (
-        <div className={'profile-stats'}>
+        <div className={classes.flexRow}>
             <div className={classes.profileCardMini}> Cards <span> {cardsTotal} </span></div>
             <div className={classes.profileCardMini}> Decks <span> {decksTotal} </span></div>
         </div>

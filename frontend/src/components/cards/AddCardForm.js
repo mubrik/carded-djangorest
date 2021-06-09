@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import {Container, Form } from 'react-bootstrap';
-import { Button } from '@material-ui/core';
-import { Formik, Field, Form as FormikForm } from "formik";
+import { Button, TextField, InputBase } from '@material-ui/core';
+import newCardStyles from './newCardStyles'
+import { useFormik } from "formik";
 import { useSnackbar } from 'notistack';
 import {addNewCard} from './cardsSlice'
 import {selectAllDecks} from '../decks/deckSlice'
@@ -12,83 +12,85 @@ import {useCreateDeck} from '../hooks/customHooks'
 const AddCardForm = (props) => {
 
     const dispatch = useDispatch();
-    const allDecksList = useSelector(selectAllDecks)
-
+    const allDecksList = useSelector(selectAllDecks);
+    // material
+    const classes = newCardStyles();
     // custom hook
     const tabledDeck = useCreateDeck(allDecksList)
     // notification
     const { enqueueSnackbar } = useSnackbar();
+    // formik
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            content: "",
+            selectedDeck: [],
+            allDeck: tabledDeck
+        },
+        onSubmit:(values) => {
+            // Do stuff here...
+            const {title, content, selectedDeck} = values;
+            /* alert(JSON.stringify(values, null, 3)); */
+            const requestBody = {
+                title,
+                content,
+                notebook: selectedDeck,
+            };
+            dispatch(addNewCard(requestBody))
+            .then((result) => {
+                if (result.meta.requestStatus === 'fulfilled') {
+                    enqueueSnackbar('Card Created', { 
+                        variant: 'success',
+                    });
+                } else {
+                    enqueueSnackbar('Error creating card', { 
+                        variant: 'error',
+                    });
+                }
+            })
+        }
+    })
 
-    const initialValues = {
-        title: "",
-        content: "",
-        selectedDeck: [],
-        allDeck: tabledDeck
-    }
-
-    function onSubmit(values) {
-        // Do stuff here...
-        const {title, content, selectedDeck} = values;
-        /* alert(JSON.stringify(values, null, 3)); */
-        const requestBody = {
-            title,
-            content,
-            notebook: selectedDeck,
-        };
-        dispatch(addNewCard(requestBody))
-        .then((result) => {
-            if (result.meta.requestStatus === 'fulfilled') {
-                enqueueSnackbar('Card Created', { 
-                    variant: 'success',
-                });
-            } else {
-                enqueueSnackbar('Error creating card', { 
-                    variant: 'error',
-                });
-            }
-        })
-    }
-
-    return (
-        <Formik {...{ initialValues, onSubmit }}>
-        {(props) => (
-            <>
-            <Container fluid>
-                <FormikForm className="baseForm" noValidate>
-                    <Form.Group>
-                        <Form.Label>Title</Form.Label>
-                        <Field
-                        type="text"
-                        id="cardTitle"
-                        className="form-control"
+    return(
+        <>
+            <div className={classes.wrapperMain}>
+                <form className={classes.flex} onSubmit={formik.handleSubmit} noValidate>
+                    <TextField
+                        fullWidth
+                        margin={'dense'}
                         name="title"
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Text</Form.Label>
-                        <Field as="textarea"
-                        id="cardContent"
-                        className="form-control"
+                        id="cardTitle"
+                        label="Title"
+                        color="secondary"
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <TextField
+                        multiline
+                        fullWidth
+                        margin={'dense'}
+                        rows={3}
                         name="content"
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Deck</Form.Label>
-                        <Field 
+                        id="cardContent"
+                        label="Content"
+                        color="secondary"
+                        value={formik.values.content}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {/* <InputBase 
                         name='selectedDeck'
-                        data={props.values.allDeck}
-                        component={MyCustomSelect}
-                        />
-                    </Form.Group>
-                    <Button variant="contained" color="secondary" onClick={props.handleSubmit}>
+                        data={formik.values.allDeck}
+                        inputComponent={MyCustomSelect}
+                    /> */}
+                    <Button variant="contained" color="secondary" onClick={formik.handleSubmit}>
                         New Card
                     </Button>
-                </FormikForm>
-            </Container>
-            </>
-        )}
-        </Formik>
-    );
+                </form>
+            </div>
+        </>
+    )
 }
 
 export default AddCardForm;

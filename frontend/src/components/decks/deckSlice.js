@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk,
     createEntityAdapter,
 } from '@reduxjs/toolkit'
-import {setStale} from '../cards/cardsSlice'
+import {setStale, fetchCards} from '../cards/cardsSlice'
 import {apiFecthResource} from '../../api/api'
 import {getArrayDifference} from '../utils/utilities'
 
@@ -92,6 +92,7 @@ export const updateDeckCards = createAsyncThunk('decks/updateDeckCards', async (
         let data = {name: deckName, notebook_notes: cards}
         response = await apiFecthResource.edit(`notebooks/${deckId}/`, data)
         dispatch(setStale())
+        dispatch(fetchCards())
         return response.data
 
     } catch (err) {

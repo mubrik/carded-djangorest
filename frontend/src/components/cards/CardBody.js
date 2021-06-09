@@ -3,8 +3,12 @@ import {useFormik } from 'formik';
 import {useHistory} from "react-router-dom"
 import {useDispatch, useSelector} from 'react-redux'
 import { useSnackbar } from 'notistack';
-import {removeCard, selectCardById, editCard} from './cardsSlice'
+import {
+    removeCard, selectCardById, editCard,
+    selectCardsStatus
+} from './cardsSlice'
 import Slide from '@material-ui/core/Slide';
+import Skeleton from '@material-ui/lab/Skeleton';
 import {Button, IconButton, Dialog, DialogActions, DialogTitle, DialogContent, TextField, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 /* boxShadow: '-1px 1px 5px 1px rgb(142 142 142 / 75%)', */
@@ -78,7 +82,7 @@ const CardBody = (props) => {
     // react
     const [showDialog, setShowDialog] = useState(false)
     // redux
-    const dispatch = useDispatch()
+    const cardsStatus = useSelector(selectCardsStatus)
     const card = useSelector(state => selectCardById(state, id))
     // router-dom
     let history = useHistory();
@@ -86,7 +90,6 @@ const CardBody = (props) => {
     const classes = useStyles();
     // notification 
     const { enqueueSnackbar } = useSnackbar();
-
     const renderButtons = props.renderButtons ? props.renderButtons : true;
 
     const handleDeleteClicked = () => {
@@ -121,6 +124,8 @@ const CardBody = (props) => {
     
     return (
         <>
+        {cardsStatus === 'updated' &&
+        <>
             <div className={classes.cardMain} >
                 <div className={classes.cardSubject}>
                     {card.title}
@@ -130,14 +135,23 @@ const CardBody = (props) => {
                 </div>
                 { renderButtons &&
                     <div className={classes.cardExtras}>
-                        <Button color="default" size="small" href="#editCard" data-index={id} onClick={() => handleEditClicked()}>
+                        <Button color="default" size="small" href="" data-index={id} onClick={() => handleEditClicked()}>
                             Edit
                         </Button>
                         <DeleteDialogSlide cardProps={cardprops}/>
                     </div>
                 }
             </div>
-        {showDialog && <EditCardDialogForm state={cardprops}/>}
+            {showDialog && <EditCardDialogForm state={cardprops}/>}
+        </>
+        }
+        {cardsStatus === "stale" &&
+        <>
+            <div className={classes.cardMain} >
+                <Skeleton variant="rect" height={220} animation="wave"/>
+            </div>
+        </>
+        }
         </>
     );
 }
