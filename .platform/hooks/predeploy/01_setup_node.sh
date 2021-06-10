@@ -8,6 +8,6 @@ nvm install 15.0.1
 
 node -e "console.log('Running Node.js ' + process.version)"
 
-npm install && npm run build
+npm install
 
 npm list --prod --depth=0 --json
