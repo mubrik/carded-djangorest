@@ -4,7 +4,7 @@ import {fetchUserData} from './userSlice'
 
 const axios = require('axios');
 const unAuthServer = axios.create({
-    baseURL: 'http://127.0.0.1:8000/backend/',
+    /* baseURL: 'http://127.0.0.1:8000/backend/', */
     timeout: 4000,
 });
 
@@ -19,7 +19,7 @@ export const userLogin = createAsyncThunk('auth/userLogin', async (passedArgs, {
     const testData = passedArgs
     let response;
     try {
-        response = await unAuthServer.post('dj-rest-auth/login/', testData);
+        response = await unAuthServer.post('/backend/dj-rest-auth/login/', testData);
         dispatch(setAuthToken(response.data))
         login(response.data)
         dispatch(fetchUserData())

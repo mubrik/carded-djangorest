@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "front end for carded app",
   "main": "index.js",
+  "proxy": "http://carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch --config webpack.config.development.js",
