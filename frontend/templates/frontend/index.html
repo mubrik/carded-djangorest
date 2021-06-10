@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-{% load render_bundle from webpack_loader %}
+{% comment %} {% load render_bundle from webpack_loader %} {% endcomment %}
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -36,8 +36,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    {% comment %} <script src="{% static 'frontend/assets/js/app.js' %}"></script>
-    <script src="{% static 'frontend/assets/js/vendors.js' %}"></script> {% endcomment %}
-    {% render_bundle 'app' 'js' %}
+    <script src="{% static 'frontend/assets/js/app.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/axios.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/reactdom.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/reactRedux.js' %}"></script>
+    <script src="{% static 'frontend/assets/js/vendors.js' %}"></script>
+    {% comment %} {% render_bundle 'app' 'js' %} {% endcomment %}
   </body>
 </html>

@@ -9,9 +9,8 @@ module.exports = merge(common, {
   bail: true,
   output: {
     path: path.resolve(__dirname, "frontend/static/frontend/assets/js"),
-    filename: '[name].[chunkhash:8].js',
-    chunkFilename: '[name].[chunkhash:8].chunk.js',
-    publicPath: '/static/frontend/assets/js/'
+    filename: '[name].js',
+    chunkFilename: '[name].chunk.js',
   },
   optimization: {
     splitChunks: {
