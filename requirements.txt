@@ -16,6 +16,7 @@ django-extensions==3.1.2
 django-health-check==3.16.4
 django-sendgrid-v5==0.9.1
 django-storages==1.11.1
+django-webpack-loader==1.0.0
 djangorestframework==3.12.4
 djangorestframework-serializer-extensions==2.0.1
 future==0.18.2

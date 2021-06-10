@@ -83,6 +83,7 @@ const CardBody = (props) => {
     const [showDialog, setShowDialog] = useState(false)
     // redux
     const cardsStatus = useSelector(selectCardsStatus)
+    const dispatch = useDispatch();
     const card = useSelector(state => selectCardById(state, id))
     // router-dom
     let history = useHistory();

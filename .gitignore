@@ -150,6 +150,7 @@ cython_debug/
 
 # files i need hidden
 .unregister/
+staticfiles/
 
 #pyright
 pyrightconfig.json

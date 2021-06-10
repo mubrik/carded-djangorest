@@ -1,32 +1,56 @@
-const path = require("path");
 const webpack = require("webpack");
-const { SourceMapDevToolPlugin } = require("webpack");
+const path = require("path");
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
 
-module.exports = {
-  entry: "./frontend/src/index.js",
+module.exports = merge(common, {
   mode: "production",
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules)/,
-        loader: "babel-loader",
-        options: { presets: ["@babel/env"] }
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      }
-    ]
-  },
-  output: {
-    path: path.resolve(__dirname, "frontend/static/frontend/"),
-    publicPath: "/frontend/static/frontend/",
-    filename: "main.js",
-    sourceMapFilename: "[name].js.map"
-  },
   devtool: false,
+  bail: true,
+  output: {
+    path: path.resolve(__dirname, "frontend/static/frontend/assets/js"),
+    filename: '[name].[chunkhash:8].js',
+    chunkFilename: '[name].[chunkhash:8].chunk.js',
+    publicPath: '/static/frontend/assets/js/'
+  },
+  optimization: {
+    splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+            react: {
+                test: /[\\/]node_modules[\\/](react)[\\/]/,
+                name: 'react',
+            },
+            bootstrap: {
+                test: /[\\/]node_modules[\\/](bootstrap)[\\/]/,
+                name: 'bootstrap',
+            },
+            reactDom: {
+                test: /[\\/]node_modules[\\/](react-dom)[\\/]/,
+                name: 'reactdom',
+            },
+            axios: {
+                test: /[\\/]node_modules[\\/](axios)[\\/]/,
+                name: 'axios',
+            },
+            reactRedux: {
+                test: /[\\/]node_modules[\\/](react-redux)[\\/]/,
+                name: 'reactRedux',
+            },
+            reactRouter: {
+                test: /[\\/]node_modules[\\/](react-router-dom)[\\/]/,
+                name: 'reactRouter',
+            },
+            vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'vendors',
+            },
+        }
+    }
+  },
   plugins: [
-    new SourceMapDevToolPlugin({}),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
   ]
-};
+})

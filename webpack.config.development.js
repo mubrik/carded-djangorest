@@ -1,32 +1,13 @@
-const path = require("path");
 const webpack = require("webpack");
-const { SourceMapDevToolPlugin } = require("webpack");
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
 
-module.exports = {
-  entry: "./frontend/src/index.js",
-  mode: "development",
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules)/,
-        loader: "babel-loader",
-        options: { presets: ["@babel/env"] }
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      }
+module.exports = merge(common, {
+    mode: "development",
+    devtool: false,
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('development'),
+      }),
     ]
-  },
-  output: {
-    path: path.resolve(__dirname, "frontend/static/frontend/"),
-    publicPath: "/frontend/static/frontend/",
-    filename: "main.js",
-    sourceMapFilename: "[name].js.map"
-  },
-  devtool: false,
-  plugins: [
-    new SourceMapDevToolPlugin({filename: '[name].js.map'}),
-  ]
-};
+})
