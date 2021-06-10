@@ -19,7 +19,6 @@ const useCardsCreator = (listObj) => {
 
     if (listObj === null || listObj === undefined) return null
     if (listObj.length === 0 ) return []
-    console.log(listObj)
     let cards = listObj.map((item) => {
         return <CardBody key={item} id={item}/>
     })
