@@ -25,6 +25,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('CARDED_SECRET')
+DEBUG = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if 'RDS_DB_NAME' in os.environ:
@@ -53,7 +54,7 @@ else:
     }
 
 ALLOWED_HOSTS = [
-    'carded-django-dev.eu-west-2.elasticbeanstalk.com',
+    'carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com',
     '127.0.0.1',
 ]
 
