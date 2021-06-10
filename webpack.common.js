@@ -27,7 +27,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.SourceMapDevToolPlugin({filename: '[name].js.map'}),
+        /* new webpack.SourceMapDevToolPlugin({filename: '[name].js.map'}), */
         new BundleTracker({
           filename: './frontend/static/frontend/assets/js/webpack-stats.json',
         }),
