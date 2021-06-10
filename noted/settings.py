@@ -18,7 +18,7 @@ from .settings_scripts import get_linux_ec2_private_ip
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = Path.joinpath(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+""" STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage' """
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
