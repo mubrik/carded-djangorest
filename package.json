@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch --config webpack.config.development.js",
-    "build": "webpack --progress --config webpack.config.production.js"
+    "build": "webpack --progress --config webpack.config.production.js --output-path ./frontend/static/frontend/assets/js/"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,8 @@
     "webpack": "^5.38.1",
     "webpack-bundle-tracker": "^1.0.0",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
