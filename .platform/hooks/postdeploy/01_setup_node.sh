@@ -19,11 +19,13 @@ $curr_dir = `pwd`
 npm install |& tee nodelog.log
 
 ls -a -l
+cd frontend/static/frontend/assets
+ls -a -l
+cd /var/app/current
 
 # permission
 chmod +x package.json
 chmod +x node_modules/.bin/webpack
-chmod -R 666 /frontend
 
 ls -a -l
 
