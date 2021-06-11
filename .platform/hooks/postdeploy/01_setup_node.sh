@@ -1,6 +1,7 @@
 #!/bin/bash
 
 TASKS_DIR=/opt/elasticbeanstalk/tasks
+echo $NODE_LOG_PATH
 
 echo "${NODE_LOG_PATH//.log/*}" > "$TASKS_DIR/bundlelogs.d/01-app-log.conf"
 # include current app log file in tail logs
@@ -15,11 +16,14 @@ nvm install 15.0.1
 node -e "console.log('Running Node.js ' + process.version)"
 
 # install devdependencies
-npm install --production=false |& tee -a $NODE_LOG_PATH
+npm install --production=false |& tee -a "$NODE_LOG_PATH"
 
 pwd
 
 ls -a -l
+
+# permission
+chmod +wr frontend
 
 # create static
 npm run build |& tee -a $NODE_LOG_PATH
