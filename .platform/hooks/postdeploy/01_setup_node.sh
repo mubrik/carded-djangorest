@@ -25,7 +25,7 @@ cd /var/app/current
 
 # permission
 chmod +x package.json
-chmod -R a+rX node_modules/.bin
+chmod -R 777 node_modules/.bin
 
 ls -a -l
 
