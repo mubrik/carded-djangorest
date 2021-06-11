@@ -14,5 +14,5 @@ module.exports = merge(common, {
         chunks: 'all',
         name: 'vendors'
     }
-  },
+  }
 })
