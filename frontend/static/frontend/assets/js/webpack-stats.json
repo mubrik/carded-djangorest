@@ -1,1 +1,0 @@
-{"status":"done","chunks":{"app":["vendors.js","app.js"]},"publicPath":"/static/","assets":{"app.js":{"name":"app.js","publicPath":"/static/app.js"},"vendors.js":{"name":"vendors.js","publicPath":"/static/vendors.js"},"vendors.js.LICENSE.txt":{"name":"vendors.js.LICENSE.txt","publicPath":"/static/vendors.js.LICENSE.txt"}}}

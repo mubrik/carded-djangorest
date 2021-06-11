@@ -10,4 +10,7 @@ node -e "console.log('Running Node.js ' + process.version)"
 
 npm install
 
+# create static
+npm run build
+
 npm list --prod --depth=0 --json

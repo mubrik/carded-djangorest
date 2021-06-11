@@ -19,9 +19,6 @@ python manage.py migrate --noinput;
 # create super user
 python manage.py createsu;
 
-# create static
-npm run build
-
 # collectstatic
 python manage.py collectstatic --noinput
 # python manage.py collectstatic --noinput;

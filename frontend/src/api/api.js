@@ -4,7 +4,7 @@ const axios = require('axios');
 
 // axios instance with base url
 const axiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8000/backend/',
+    baseURL: 'http://carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com/backend/',
     timeout: 4000,
 });
 
