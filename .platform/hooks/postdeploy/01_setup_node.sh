@@ -22,7 +22,7 @@ ls -a -l
 # permission
 chmod +x package.json
 chmod +x node_modules/.bin/webpack
-chmod +wr -R /frontend
+chmod +wr -R ./frontend
 
 ls -a -l
 
@@ -32,5 +32,5 @@ npm run build |& tee -a nodelog.log
 
 # print for logs
 npm list --depth=0 --json |& tee -a nodelog.log
-nodelog.log > "$TASKS_DIR/bundlelogs.d/01-app-log.conf"
-nodelog.log > "$TASKS_DIR/taillogs.d/01-app-log.conf"
+echo nodelog.log > "$TASKS_DIR/bundlelogs.d/01-app-log.conf"
+echo nodelog.log > "$TASKS_DIR/taillogs.d/01-app-log.conf"
