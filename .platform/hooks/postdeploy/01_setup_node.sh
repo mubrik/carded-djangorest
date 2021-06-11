@@ -16,14 +16,17 @@ nvm install 15.0.1
 node -e "console.log('Running Node.js ' + process.version)"
 
 # install devdependencies
-npm install --production=false |& tee -a "$NODE_LOG_PATH"
+npm install |& tee "$NODE_LOG_PATH"
 
 pwd
-
 ls -a -l
 
 # permission
+chmod +x package.json
 chmod +wr frontend
+
+ls -a -l
+
 
 # create static
 npm run build |& tee -a $NODE_LOG_PATH
