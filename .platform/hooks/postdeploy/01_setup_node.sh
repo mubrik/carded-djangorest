@@ -30,7 +30,7 @@ chmod -R 777 node_modules/.bin
 ls -a -l
 
 # create static
-npm run build |& tee -a nodelog.log
+sudo npm run build |& tee -a nodelog.log
 
 # print for logs
 npm list --depth=0 --json |& tee -a nodelog.log
