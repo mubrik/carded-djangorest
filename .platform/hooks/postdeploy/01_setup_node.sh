@@ -11,6 +11,8 @@ node -e "console.log('Running Node.js ' + process.version)"
 # install devdependencies
 npm install --production=false
 
+pwd
+
 # create static
 npm run build
 
