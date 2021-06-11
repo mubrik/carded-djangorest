@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch --config webpack.config.development.js",
-    "build": "webpack --progress --config webpack.config.production.js --output-path ./frontend/static/frontend/assets/js/ |& tee -a nodelog.log"
+    "build": "webpack --progress --config webpack.config.production.js --output-path ./frontend/static/frontend/assets/js/"
   },
   "repository": {
     "type": "git",
