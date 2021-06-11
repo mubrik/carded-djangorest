@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch --config webpack.config.development.js",
-    "build": "webpack --config webpack.config.production.js",
-    "start": "webpack --config webpack.config.production.js"
+    "build": "webpack --progress --config webpack.config.production.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +19,6 @@
   },
   "homepage": "https://github.com/mubrik/carded-react-FE#readme",
   "devDependencies": {
-    
-  },
-  "dependencies": {
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
@@ -36,7 +32,9 @@
     "webpack": "^5.38.1",
     "webpack-bundle-tracker": "^1.0.0",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",

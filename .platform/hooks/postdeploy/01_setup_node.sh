@@ -8,9 +8,11 @@ nvm install 15.0.1
 
 node -e "console.log('Running Node.js ' + process.version)"
 
-npm install
+# install devdependencies
+npm install --production=false
 
 # create static
 npm run build
 
-npm list --prod --depth=0 --json
+# print for logs
+npm list --depth=0 --json
