@@ -47,9 +47,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignupForm = (props) => {
-    
-    // react
-    const [formSubmitting, setformSubmitting] = React.useState(false)
     // redux
     const dispatch = useDispatch();
     // material
@@ -59,8 +56,7 @@ const SignupForm = (props) => {
     // formik
     const formik = useFormik({
         initialValues: { username: '', password1: '', password2: '', email: '' },
-        onSubmit: async(values, formikBag) => {
-            setformSubmitting(true)
+        onSubmit: (values, formikBag) => {
             dispatch(userSignup(values))
             .then((result) => {
                 if (result.meta.requestStatus === 'fulfilled') {
@@ -85,6 +81,7 @@ const SignupForm = (props) => {
                         variant: 'error',
                     });
                 }
+                formikBag.setSubmitting(false)
             })
         },
         validationSchema: Yup.object({
@@ -165,12 +162,12 @@ const SignupForm = (props) => {
                         color="default"
                         type="submit"
                         onClick={formik.handleSubmit}
-                        disabled={formSubmitting}
+                        disabled={formik.isSubmitting}
                         className={classes.buttonForm}
                         >
                         Sign up
                     </Button>
-                    {formSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    {formik.isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                 </div>
             </form>
         </Container>

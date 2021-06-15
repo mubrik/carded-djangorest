@@ -76,7 +76,6 @@ const AccountMangementPage = (props) => {
     const userDetailStatus = useSelector(selectUserDetailStatus)
     const dispatch = useDispatch()
     
-
     React.useEffect(() => {
         if (userDetailStatus === 'stale') {
             dispatch(fetchUserData())
@@ -108,7 +107,6 @@ const PasswordChangeForm = (props) => {
             new_password2: ''
         },
         onSubmit: (values, formikBag) => {
-            alert(JSON.stringify(values, null, 2));
             dispatch(updateUserPassword(values))
             .then((result) => {
                 if (result.meta.requestStatus === 'fulfilled') {

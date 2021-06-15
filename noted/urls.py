@@ -21,7 +21,7 @@ router.register(r'users', UserViewSet, basename='user')
 router.register(r'profiles', ProfileViewSet, basename='profile')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin-page', admin.site.urls),
     path('health/', include('health_check.urls')),
     path('backend/password-reset/confirm/<uidb64>/<token>/',
         TemplateView.as_view(template_name="password_reset_confirm.html"),

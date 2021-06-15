@@ -4,8 +4,8 @@ const axios = require('axios');
 
 // axios instance with base url
 const axiosInstance = axios.create({
-    baseURL: 'http://carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com/backend/',
-    timeout: 4000,
+    baseURL: 'backend/',
+    timeout: 5000,
 });
 
 //token handler for managing token auth, unexposed

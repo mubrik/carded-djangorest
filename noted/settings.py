@@ -18,6 +18,8 @@ from .settings_scripts import get_linux_ec2_private_ip
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = Path.joinpath(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+WEBPACK_DEV_PATH = Path.joinpath(BASE_DIR, 'frontend/static/frontend/assets/js/dev/webpack-stats.json')
+WEBPACK_PRD_PATH = Path.joinpath(BASE_DIR, 'frontend/static/frontend/assets/js/prd/webpack-stats.json')
 """ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage' """
 
 # Quick-start development settings - unsuitable for production
@@ -53,6 +55,7 @@ else:
         }
     }
 
+print(DEBUG)
 ALLOWED_HOSTS = [
     'carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com',
     '127.0.0.1',
@@ -92,9 +95,10 @@ INSTALLED_APPS = [
 
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'STATS_FILE': Path.joinpath(BASE_DIR, 'frontend/static/frontend/assets/js/webpack-stats.json')
+        'STATS_FILE': WEBPACK_DEV_PATH if DEBUG else WEBPACK_PRD_PATH
     },
 }
+# WEBPACK_DEV_PATH if DEBUG else WEBPACK_PRD_PATH
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

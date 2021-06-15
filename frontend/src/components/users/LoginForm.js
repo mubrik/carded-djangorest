@@ -10,6 +10,7 @@ import {useFormik } from 'formik';
 import {Container} from 'react-bootstrap';
 import { useSnackbar } from 'notistack';
 import GoogleLogin from 'react-google-login';
+import {useAuth} from '../../api/api'
 import * as Yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,29 +54,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginForm = (props) => {
-
+    //  auth
+    let isAuthenticated = useAuth();
     // notification
     const { enqueueSnackbar } = useSnackbar();
-    // react
-    const [formSubmitting, setformSubmitting] = React.useState(false)
     // redux
     const dispatch = useDispatch();
     // router
     const history = useHistory();
     // material
     const classes = useStyles();
+    // useeffect
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            history.replace('/cards')
+        }
+    },[isAuthenticated])
     // formik
     const formik = useFormik({
         initialValues:{username: '', password: ''},
-        onSubmit: async (values, formikBag) => {
-            setformSubmitting(true)
-            let bodyData = { username: "mubrik", password: "django@321"}
-            dispatch(userLogin(bodyData))
+        onSubmit: (values, formikBag) => {
+            dispatch(userLogin(values))
             .then((result) => {
-                if (result.meta.requestStatus === 'fulfilled') {
-                    history.push('/cards')
-                } else {
-                    setformSubmitting(false)
+                if (result.meta.requestStatus === 'rejected') {
                     const {
                         username, password,
                         non_field_errors
@@ -88,6 +89,7 @@ const LoginForm = (props) => {
                     enqueueSnackbar(non_field_errors ? non_field_errors.toString() :'Authenticaton Error', { 
                         variant: 'error',
                     });
+                    formikBag.setSubmitting(false)
                 }
             })
         },
@@ -109,6 +111,7 @@ const LoginForm = (props) => {
                     id="id-username"
                     margin="dense"
                     color="secondary"
+                    autoComplete="username"
                     error={!!formik.errors.username}
                     helperText={!!formik.errors.username && formik.errors.username}
                     fullWidth
@@ -119,12 +122,14 @@ const LoginForm = (props) => {
                 <TextField
                     name="password"
                     label="Password"
+                    type="password"
                     id="id-password"
                     margin="dense"
                     color="secondary"
-                    error={!!formik.errors.password}
                     fullWidth
-                    value={formik.values.password}
+                    autoComplete="current-password"
+                    error={!!formik.errors.password}
+                    /* value={formik.values.password} */
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                 />
@@ -133,14 +138,14 @@ const LoginForm = (props) => {
                         variant="contained"
                         color="default"
                         type="submit"
-                        disabled={formSubmitting}
+                        disabled={formik.isSubmitting}
                         className={classes.buttonForm}
                         margin='dense'
                         >
                         Login
                     </Button>
                     <Typography variant="body1" className={classes.buttonForm}> or </Typography>
-                    {formSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    {formik.isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                 </div>
             </form>
             <PasswordResetRequest/>

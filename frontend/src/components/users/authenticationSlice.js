@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk, } from '@reduxjs/toolkit'
 import {login, logout, apiFecthResource} from '../../api/api'
 import {fetchUserData} from './userSlice'
+import {clearDecks} from '../decks/deckSlice'
+import {clearCards} from '../cards/cardsSlice'
 
 const axios = require('axios');
-const unAuthServer = axios.create({
-    baseURL: "http://carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com/backend/",
-    timeout: 4000,
-});
 
 const initialState = {
     token: null,
@@ -16,11 +14,9 @@ const initialState = {
 
 export const userLogin = createAsyncThunk('auth/userLogin', async (passedArgs, {dispatch, rejectWithValue }) => {
 
-    const testData = passedArgs
-    let response;
+    const loginValues = passedArgs
     try {
-        response = await axios.post('dj-rest-auth/login/', testData);
-        console.log(response)
+        let response = await axios.post('/backend/dj-rest-auth/login/', loginValues);
         dispatch(setAuthToken(response.data))
         login(response.data)
         dispatch(fetchUserData())
@@ -40,12 +36,13 @@ export const userLogin = createAsyncThunk('auth/userLogin', async (passedArgs, {
 })
 
 export const userLogout = createAsyncThunk('auth/userLogout', async (passedArgs, { dispatch, rejectWithValue }) => {
-
-    let response;
     try {
-        response = await apiFecthResource.post('dj-rest-auth/logout/');
-        dispatch(clearAuthToken())
+        const routerHistory = passedArgs
+        let response = await apiFecthResource.post('dj-rest-auth/logout/');
         logout()
+        dispatch(clearAuthToken())
+        dispatch(clearCards())
+        dispatch(clearDecks())
 
     } catch (err) {
         if (err.response) {
@@ -63,10 +60,8 @@ export const userLogout = createAsyncThunk('auth/userLogout', async (passedArgs,
 export const userSignup = createAsyncThunk('auth/userSignup', async (passedArgs, {dispatch, rejectWithValue }) => {
 
     const requestBody = passedArgs
-
-    let response;
     try {
-        response = await unAuthServer.post('dj-rest-auth/registration/', requestBody);
+        let response = await unAuthServer.post('dj-rest-auth/registration/', requestBody);
         dispatch(setAuthToken(response.data))
         login(response.data)
         dispatch(fetchUserData())

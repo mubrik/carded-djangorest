@@ -2,11 +2,11 @@ import React from 'react'
 import {useFormik } from 'formik';
 import {useDispatch, useSelector} from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
-import {TextField, Button } from '@material-ui/core';
+import {TextField, Button, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import {editProfileData, fetchUserData,
         selectUserDetailStatus, selectUserBdate,
-        selectUserProfilePic
+        selectUserProfilePic, selectUserUsername
 } from './userSlice'
 import {selectCardsTotal} from '../cards/cardsSlice'
 import {selectDeckTotal} from '../decks/deckSlice'
@@ -28,6 +28,20 @@ const useStyles = makeStyles((theme) => ({
         minHeight: 'inherit',
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary
+    },
+    profileUsername: {
+        minWidth: '80px',
+        alignItems: 'center',
+        background: `linear-gradient(
+            180deg,
+            ${theme.palette.background.default} 95%,
+            ${theme.palette.secondary.main}f5 100%)`,
+        borderRadius: '8px',
+        margin: '0.5em 0.4em',
+        padding: '0.8em 0.2em',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column'
     },
     profileCardMini: {
         minWidth: '80px',
@@ -95,6 +109,7 @@ const ProfilePage = (props) => {
     const classes = useStyles();
     // redux
     const userDetailStatus = useSelector(selectUserDetailStatus)
+    const username = useSelector(selectUserUsername)
     const dispatch = useDispatch()
 
     React.useEffect(() => {
@@ -105,9 +120,10 @@ const ProfilePage = (props) => {
 
     return (
         <div className={classes.root}>
+            <Typography className={classes.profileUsername} variant="h6"> Hello {username ? username : "User"} </Typography>
             <ProfileAvatar/>
             <ProfileCardStatDetail/>
-            <ProfileCardUpdateForm/>
+            <ProfileCardUpdateForm/>s
         </div>
     )
 }
@@ -126,7 +142,6 @@ const ProfileAvatar = (props) => {
             profile_picture: null,
         },
         onSubmit: (values, formikBag) => {
-            /* alert(JSON.stringify(values, null, 2)); */
             const formData = new FormData()
             formData.append('profile_picture', values['profile_picture'])
             dispatch(editProfileData(formData))
@@ -182,7 +197,6 @@ const ProfileAvatar = (props) => {
                     </Button>
                 </div>
             </form>
-            {/* <img alt="go brrr" src="/assets/images/lOGOBIG.png" /> */}
         </div>
     )
 }

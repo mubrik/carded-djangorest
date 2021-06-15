@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   BrowserRouter as Router,
-  Switch,
+  Switch, useHistory,
   Route,
   Redirect,
 } from 'react-router-dom'
@@ -26,13 +26,16 @@ import NoMatchFound from './components/ui/CustomNoMatchFound'
 import {useAuth} from './api/api'
 
 function PrivateRoute({ children, ...rest }) {
+    // auth
     let isAuthenticated = useAuth();
-    // notificantion
+    // notification
     const { enqueueSnackbar } = useSnackbar();
+    // router
+    const history = useHistory()
     // React
     React.useEffect(() => {
         if (!isAuthenticated) {
-            enqueueSnackbar('Authentication Needed', {variant: 'warning', persist: false,})
+            enqueueSnackbar('Logged Out', {variant: 'warning', persist: false,})
         }
     }, [isAuthenticated, enqueueSnackbar])
 
@@ -106,8 +109,8 @@ function App() {
                     <HeaderBar
                     mainBody={
                         <Switch>
+                            <Route path="/login" render={() => <LoginForm/>}/>
                             <Route path="/signup" render={() => <SignupForm/>}/>
-                            <Route path="/login" render={isAuthenticated ? () => <CardList/> : () => <LoginForm/>}/>
                             <PrivateRoute path="/cards" children={<CardList/>}/>
                             <PrivateRoute path="/card/new" children={<AddCardForm/>}/>
                             <PrivateRoute path="/card/edit/:id" children={<EditCardForm/>}/>

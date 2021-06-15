@@ -47,9 +47,7 @@ const AccountNavButton = (props) => {
     }
 
     const handleLogoutConfirm = () => {
-        history.push('/login')
-        dispatch(clearCards())
-        dispatch(userLogout())
+        dispatch(userLogout(history))
     }
 
     return (

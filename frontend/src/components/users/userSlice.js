@@ -157,6 +157,7 @@ const userSlice = createSlice({
 export const selectEmailConfirmationStatus = state => state.user.emailConfirmation;
 export const selectUserDetailStatus = state => state.user.data.status;
 export const selectUserEmail = state => state.user.data.email;
+export const selectUserUsername = state => state.user.data.username;
 export const selectUserProfilePic = state => state.user.data.user_profile.profile_picture;
 export const selectUserBdate = state => state.user.data.user_profile.birth_date;
 

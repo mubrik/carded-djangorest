@@ -111,6 +111,10 @@ const decksSlice = createSlice({
     name: 'decks',
     initialState,
     reducers: {
+        clearDecks(state, action) {
+            decksAdapter.removeAll(state)
+            state.status = 'stale'
+        },
         removeDeck(state, action) {
             let delDeckId = action.payload;
             let delIndex = state.ids.findIndex((deckId) => deckId === delDeckId)
@@ -199,6 +203,6 @@ export const selectCardsByDeckId = (state, id) => {
     return arr
 }
 
-export const {updateActiveDeck, removeCardFromDecks, updateCardInDeck, removeDeck} = decksSlice.actions;
+export const {updateActiveDeck, removeCardFromDecks, updateCardInDeck, removeDeck, clearDecks} = decksSlice.actions;
 
 export default decksSlice.reducer;
