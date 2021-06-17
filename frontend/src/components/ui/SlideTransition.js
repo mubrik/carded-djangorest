@@ -3,7 +3,7 @@ import Slide from '@material-ui/core/Slide';
 
 const SlideTransition = React.forwardRef(function Transition(props, ref) {
     return <Slide 
-            ref={ref} 
+            ref={ref}
             {...props}
             timeout={{ enter: 150, exit: 300,}} />;
 });

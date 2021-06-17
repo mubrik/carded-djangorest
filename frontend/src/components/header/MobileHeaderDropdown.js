@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory} from 'react-router-dom'
+import { useHistory, useLocation} from 'react-router-dom'
 import SlideTransition from '../ui/SlideTransition'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -10,12 +10,11 @@ const MobileHeaderDropdown = (props) => {
 
     // react-router
     const history = useHistory()
+    const {pathname} = useLocation()
     // auth 
     const {isAuthenticated} = props;
     // anchor element for menu
     const [anchorEl, setAnchorEl] = React.useState(null);
-    // current  menu
-    const [currentMenu, setCurrentMenu] = React.useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -29,7 +28,6 @@ const MobileHeaderDropdown = (props) => {
         let path = event.target.getAttribute('href')
         handleClose()
         history.push(path)
-        setCurrentMenu(event.target.textContent)
     }
     
     return (
@@ -44,7 +42,7 @@ const MobileHeaderDropdown = (props) => {
                 variant="contained"
                 size={'small'}
                 color="secondary">
-                {currentMenu ? currentMenu : 'Dropdown'}
+                {pathname ? pathname.slice(1) : 'Dropdown'}
             </Button>
             <Menu
                 id="dropdown-auth-menu"
@@ -71,7 +69,7 @@ const MobileHeaderDropdown = (props) => {
                 variant="contained"
                 size={'small'}
                 color="secondary">
-                {currentMenu ? currentMenu : 'Dropdown'}
+                {pathname ? pathname.slice(1) : 'Dropdown'}
             </Button>
             <Menu
                 id="dropdown-auth-menu"

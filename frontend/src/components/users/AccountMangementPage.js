@@ -1,62 +1,62 @@
-import React from 'react'
-import {useFormik } from 'formik';
-import {useDispatch, useSelector} from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles';
-import { useSnackbar } from 'notistack';
-import {TextField, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Link } from '@material-ui/core';
+import React from "react";
+import {useFormik } from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
+import {TextField, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Link } from "@material-ui/core";
 import {
     updateUserPassword, resetUserPassword,
     selectUserDetailStatus, fetchUserData,
     selectUserEmail
-} from './userSlice'
-import * as Yup from 'yup';
+} from "./userSlice";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
     input_file: {
-      display: 'none',
+        display: "none",
     },
     root: {
-        display: 'grid',
-        justifyItems: 'center',
-        alignContent: 'flex-start',
+        display: "grid",
+        justifyItems: "center",
+        alignContent: "flex-start",
         boxShadow: `0px 1px 4px 0px ${theme.palette.text.primary}`,
-        borderRadius: '8px',
-        margin: 'auto',
-        padding: '.4em .5em',
-        minHeight: 'inherit',
+        borderRadius: "8px",
+        margin: "auto",
+        padding: ".4em .5em",
+        minHeight: "inherit",
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary
     },
     profileCardMini: {
-        minWidth: '80px',
+        minWidth: "80px",
         boxShadow: `0px 0px 1.5px 0px ${theme.palette.text.primary}`,
-        alignItems: 'center',
+        alignItems: "center",
         background: `linear-gradient(
             180deg,
             ${theme.palette.background.default} 97%,
             ${theme.palette.secondary.main}f5 100%)`,
-        borderRadius: '8px',
-        margin: '0.5em 0.4em',
-        padding: '0.8em 0.2em',
-        textAlign: 'center',
-        display: 'flex',
-        flexDirection: 'column'
+        borderRadius: "8px",
+        margin: "0.5em 0.4em",
+        padding: "0.8em 0.2em",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column"
     },
     profileCard: {
-        minWidth: '70%',
+        minWidth: "80%",
         boxShadow: `0px 0px 1.5px 0px ${theme.palette.text.primary}`,
-        alignItems: 'center',
+        alignItems: "center",
         background: `linear-gradient(
             180deg,
             ${theme.palette.background.default} 98%,
             ${theme.palette.secondary.main}f5 100%)`,
-        borderRadius: '8px',
-        margin: '0.5em 0.4em',
-        padding: '0.8em 0.2em',
-        textAlign: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly'
+        borderRadius: "8px",
+        margin: "0.5em 0.4em",
+        padding: "0.8em 0.2em",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly"
     },
     topMargin: {
         marginTop: theme.spacing(1)
@@ -68,32 +68,32 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const AccountMangementPage = (props) => {
+const AccountMangementPage = () => {
 
     // material styles
     const classes = useStyles();
     // redux
-    const userDetailStatus = useSelector(selectUserDetailStatus)
-    const dispatch = useDispatch()
+    const userDetailStatus = useSelector(selectUserDetailStatus);
+    const dispatch = useDispatch();
     
     React.useEffect(() => {
-        if (userDetailStatus === 'stale') {
-            dispatch(fetchUserData())
+        if (userDetailStatus === "stale") {
+            dispatch(fetchUserData());
         }
-    }, [userDetailStatus, dispatch])
+    }, [userDetailStatus, dispatch]);
 
     return (
         <div className={classes.root}>
             <PasswordChangeForm />
             <PasswordResetRequest/>
         </div>
-    )
-}
+    );
+};
 
-const PasswordChangeForm = (props) => {
+const PasswordChangeForm = () => {
 
     // redux
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     // material styles
     const classes = useStyles();
     // notification 
@@ -102,121 +102,142 @@ const PasswordChangeForm = (props) => {
     // formik
     const formik = useFormik({
         initialValues: {
-            old_password: '',
-            new_password1: '',
-            new_password2: ''
+            old_password: "",
+            new_password1: "",
+            new_password2: ""
         },
         onSubmit: (values, formikBag) => {
             dispatch(updateUserPassword(values))
-            .then((result) => {
-                if (result.meta.requestStatus === 'fulfilled') {
-                    enqueueSnackbar('Password Updated Successfully', { 
-                        variant: 'success',
-                    });
-                } else {
-                    const {
-                        old_password, new_password1,
-                        new_password2, non_field_errors
-                    } = result.payload;
-                    formikBag.setErrors({
-                        old_password: old_password ? old_password.toString(): '',
-                        new_password1: new_password1 ? new_password1.toString(): '',
-                        new_password2: new_password2 ? new_password2.toString(): '',
-                        non_field_errors: non_field_errors ? non_field_errors.toString(): '',
-                    })
-                    enqueueSnackbar('Error Updating Password', {
-                        variant: 'error',
-                    });
-                }
-                formikBag.setSubmitting(false)
-            })
+                .then((result) => {
+                    if (result.meta.requestStatus === "fulfilled") {
+                        enqueueSnackbar("Password Updated Successfully", { 
+                            variant: "success",
+                        });
+                    } else {
+                        const {
+                            old_password, new_password1,
+                            new_password2, non_field_errors
+                        } = result.payload;
+                        formikBag.setErrors({
+                            old_password: old_password ? old_password.toString(): "",
+                            new_password1: new_password1 ? new_password1.toString(): "",
+                            new_password2: new_password2 ? new_password2.toString(): "",
+                            non_field_errors: non_field_errors ? non_field_errors.toString(): "",
+                        });
+                        enqueueSnackbar("Error Updating Password", {
+                            variant: "error",
+                        });
+                    }
+                    formikBag.setSubmitting(false);
+                });
         },
         validationSchema: Yup.object({
-            old_password: Yup.string().required('Required'),
-            new_password1: Yup.string().required('Required'),
-            new_password2: Yup.string().required('Required'),
+            old_password: Yup.string().required("Required"),
+            new_password1: Yup.string().required("Required"),
+            new_password2: Yup.string().required("Required"),
         })
-    })
+    });
 
     return(
         <>
-        <form className={classes.profileCard} onSubmit={formik.handleSubmit}>
-            <TextField
-            id="filled-old_password-input"
-            name="old_password"
-            label="Old Password"
-            type="password"
-            autoComplete="current-password"
-            variant="outlined"
-            margin="dense"
-            color="secondary"
-            error={!!formik.errors.old_password}
-            helperText={formik.errors.old_password}
-            value={formik.values.old_password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            />
-            <TextField
-            id="filled-new_password1-input"
-            name="new_password1"
-            label="New Password"
-            type="password"
-            autoComplete="new-password"
-            variant="outlined"
-            margin="dense"
-            color="secondary"
-            error={!!formik.errors.new_password1}
-            helperText={formik.errors.new_password1}
-            value={formik.values.new_password1}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            />
-            <TextField
-            id="filled-new_password2-input"
-            name="new_password2"
-            label="New Password Again"
-            type="password"
-            autoComplete="new-password"
-            variant="outlined"
-            margin="dense"
-            color="secondary"
-            error={!!formik.errors.new_password2}
-            helperText={formik.errors.new_password2}
-            value={formik.values.new_password2}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            />
-            <Button variant="contained" 
-            onClick={formik.handleSubmit} 
-            margin="dense" 
-            className={classes.topMargin}
-            disabled={formik.isSubmitting}
-            >
+            <form className={classes.profileCard} onSubmit={formik.handleSubmit}>
+                <TextField
+                    id="filled-old_password-input"
+                    name="old_password"
+                    label="Old Password"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="outlined"
+                    margin="dense"
+                    color="secondary"
+                    error={!!formik.errors.old_password}
+                    helperText={formik.errors.old_password}
+                    value={formik.values.old_password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                />
+                <TextField
+                    id="filled-new_password1-input"
+                    name="new_password1"
+                    label="New Password"
+                    type="password"
+                    autoComplete="new-password"
+                    variant="outlined"
+                    margin="dense"
+                    color="secondary"
+                    error={!!formik.errors.new_password1}
+                    helperText={formik.errors.new_password1}
+                    value={formik.values.new_password1}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                />
+                <TextField
+                    id="filled-new_password2-input"
+                    name="new_password2"
+                    label="New Password Again"
+                    type="password"
+                    autoComplete="new-password"
+                    variant="outlined"
+                    margin="dense"
+                    color="secondary"
+                    error={!!formik.errors.new_password2}
+                    helperText={formik.errors.new_password2}
+                    value={formik.values.new_password2}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                />
+                <Button variant="contained" 
+                    onClick={formik.handleSubmit} 
+                    margin="dense" 
+                    className={classes.topMargin}
+                    disabled={formik.isSubmitting}
+                >
                 Update Password
-            </Button>
-        </form>
+                </Button>
+            </form>
         </>
-    )
-}
+    );
+};
 
-const PasswordResetRequest = (props) => {
+const PasswordResetRequest = () => {
     // redux 
-    const dispatch = useDispatch()
-    const userEmail = useSelector(selectUserEmail)
+    const dispatch = useDispatch();
+    const userEmail = useSelector(selectUserEmail);
     // react
     const [open, setOpen] = React.useState(false);
+    // notification 
+    const { enqueueSnackbar } = useSnackbar();
     // material styles
     const classes = useStyles();
     // formik
     const formik = useFormik({
         initialValues: {
-            email: userEmail ? userEmail : ''
+            email: userEmail ? userEmail : ""
         },
-        onSubmit: async (values) => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit: (values, formikBag) => {
             dispatch(resetUserPassword(values))
+                .then((result) => {
+                    if (result.meta.requestStatus === "fulfilled") {
+                        enqueueSnackbar("Password Reset link Queued", { 
+                            variant: "success",
+                        });
+                        setOpen(false);
+                    } else {
+                        const {
+                            email, non_field_errors
+                        } = result.payload;
+                        formikBag.setErrors({
+                            email: email ? email.toString(): "",
+                            non_field_errors: non_field_errors ? non_field_errors.toString(): "",
+                        });
+                        enqueueSnackbar(`Error ${non_field_errors.toString()}`, {
+                            variant: "error",
+                        });
+                    }
+                    formikBag.setSubmitting(false);
+                });
         }
-    })
+    });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -228,46 +249,46 @@ const PasswordResetRequest = (props) => {
 
     return (
         <>
-        <Link
-            component="button"
-            variant='subtitle2'
-            onClick={handleClickOpen}
-            className={classes.topMargin}
-            color="inherit"
-        >
+            <Link
+                component="button"
+                variant='subtitle2'
+                onClick={handleClickOpen}
+                className={classes.topMargin}
+                color="inherit"
+            >
             Forgot Password? Click here to request a password reset
-        </Link>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-password-reset">
-            <DialogTitle id="form-dialog-password-reset">Password Reset</DialogTitle>
-            <DialogContent>
-            <DialogContentText>
+            </Link>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-password-reset">
+                <DialogTitle id="form-dialog-password-reset">Password Reset</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
                 Enter your email address and we will forward you a password reset link
-            </DialogContentText>
-            <TextField
-                autoFocus
-                color="secondary"
-                name="email"
-                margin="dense"
-                id="emailForm"
-                label="Email Address"
-                type="email"
-                onChange={formik.handleChange}
-                defaultValue={formik.values.email}
-                fullWidth
-            />
-            </DialogContent>
-            <DialogActions>
-            <Button onClick={handleClose} className={classes.cancelButton}>
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        color="secondary"
+                        name="email"
+                        margin="dense"
+                        id="emailForm"
+                        label="Email Address"
+                        type="email"
+                        onChange={formik.handleChange}
+                        defaultValue={formik.values.email}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} className={classes.cancelButton}>
                 Cancel
-            </Button>
-            <Button onClick={formik.handleSubmit} color="default">
+                    </Button>
+                    <Button onClick={formik.handleSubmit} color="default">
                 Request Reset
-            </Button>
-            </DialogActions>
-        </Dialog>
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
-}
+};
 
 export default AccountMangementPage;
-export {PasswordResetRequest, PasswordChangeForm}
+export {PasswordResetRequest, PasswordChangeForm};

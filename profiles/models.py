@@ -42,6 +42,3 @@ class BaseProfile(TimeStampedModel, models.Model):
     def __str__(self):
         return f'{self.user.username} profile'
 
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of the model."""
-        return reverse('profile_detail')

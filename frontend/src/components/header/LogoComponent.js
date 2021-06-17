@@ -1,41 +1,41 @@
-import React from 'react'
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import React from "react";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     headerImg: {
-        display: 'none',
-        height: '34px',
-        [theme.breakpoints.up('sm')]: {
-          display: 'block',
+        display: "none",
+        height: "34px",
+        [theme.breakpoints.up("sm")]: {
+            display: "block",
         }
     }
 }));
 
-const LogoComponent = (props) => {
+const LogoComponent = () => {
 
     // material classes
     const classes = useStyles();
     const theme = useTheme();
     // react
-    const [src, setSrc] = React.useState(theme.palette.type)
-    const darkTheme = theme.palette.type
+    const [src, setSrc] = React.useState(theme.palette.type);
+    const darkTheme = theme.palette.type;
 
     React.useEffect(() => {
-        if (darkTheme === 'dark') {
-            setSrc('dark')
+        if (darkTheme === "dark") {
+            setSrc("dark");
         } else {
-            setSrc('light')
+            setSrc("light");
         }
-    }, [darkTheme])
+    }, [darkTheme]);
 
     return(
         <img
-            key={'image-icon'}
+            key={"image-icon"}
             className={classes.headerImg}
-            alt={'title'}
-            src={src === 'dark' ? '/static/frontend/assets/images/CARDEDWHITE.png' : '/static/frontend/assets/images/CARDEDBLACK.png'}
+            alt={"title"}
+            src={src === "dark" ? "/static/frontend/assets/images/CARDEDWHITE.png" : "/static/frontend/assets/images/CARDEDBLACK.png"}
         />
-    )
-}
+    );
+};
 
-export default LogoComponent
+export default LogoComponent;

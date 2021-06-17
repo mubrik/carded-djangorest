@@ -30,8 +30,4 @@ class Note(TimeStampedModel):
     def __str__(self):
         return f'note title: {self.title}'
 
-    @property
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of the model."""
-        return reverse('note_detail', args=[str(self.id)])
 

@@ -1,59 +1,66 @@
-import React from 'react';
-import { makeStyles} from '@material-ui/core/styles';
-import {ListGroup} from 'react-bootstrap';
+import React from "react";
+import {useSelector} from "react-redux";
+import { makeStyles} from "@material-ui/core/styles";
+import {ListGroup} from "react-bootstrap";
+import {selectActiveDeck} from "../decks/deckSlice";
 
 const useStyles = makeStyles((theme) => ({
     wrapperMain: {
-        padding: '0.4em 1em',
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
-        borderRadius: '.4em'
+        padding: "0.4em 1em",
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "nowrap",
+        borderRadius: ".4em"
     },
     innerForm: {
-        padding: '0.4em 0.4em',
+        padding: "0.4em 0.4em",
         border: `0.5px solid ${theme.palette.secondary.dark}`,
-        borderRadius: '.5em',
+        borderRadius: ".5em",
         marginBottom: theme.spacing(2)
     },
     Decks: {
-        padding: '0.4em 0.4em',
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "nowrap",
     },
     innerDecks: {
-        padding: theme.spacing(0.4),
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
-        alignItems: 'flex-start',
-        gap: '1em'
+        display: "grid",
+        gridTemplateColumns: "auto 1fr",
+        alignItems: "flex-start",
+        gap: "1em",
+        [theme.breakpoints.between("100", "500")]: {
+            gridTemplateColumns: "none",
+            gridTemplateRows: "auto"
+        },
     },
     innerListForm: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "nowrap",
         backgroundColor: theme.palette.background.default,
         border: `1px solid ${theme.palette.secondary.light}`,
-        borderRadius: '.8em'
+        borderRadius: ".8em",
+        [theme.breakpoints.between("100", "500")]: {
+            maxHeight: "200px"
+        },
     },
     innerCards: {
-        display: 'flex',
-        flexWrap: 'wrap',
+        display: "flex",
+        flexWrap: "wrap",
     },
     deckList: {
-        display: 'flex',
-        flexWrap: 'wrap',
+        display: "flex",
+        flexWrap: "wrap",
         marginBottom: theme.spacing(2),
     },
     formContainer: {
-        width: '100%',
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
-        alignItems: 'flex-start',
-        gap: '1em'
+        width: "100%",
+        marginRight: "auto",
+        marginLeft: "auto",
+        display: "grid",
+        gridTemplateColumns: "1fr auto",
+        alignItems: "flex-start",
+        gap: "1em"
     },
 }));
 
@@ -62,10 +69,14 @@ const MainBodyLayout = (props) => {
     const classes = useStyles();
     // decks
     const deck = props.deck;
+    // deckform
+    const deckForm = props.deckForm;
     // cards
     const cards = props.cards;
     // search
     const search = props.search;
+    // selected deck
+    const selectedDeckId = useSelector(selectActiveDeck);
 
     return(
         <div className={classes.wrapperMain}>
@@ -88,18 +99,20 @@ const MainBodyLayout = (props) => {
                     {props.deckList}
                 </ListGroup>
                 <div className={classes.innerDecks}>
+                    {selectedDeckId && 
+                        <div className={classes.innerListForm}>
+                            {deckForm}
+                        </div>
+                    }
                     <div className={classes.innerCards}>
                         {props.decks}
-                    </div>
-                    <div className={classes.innerListForm}>
-                        {props.deckForm}
                     </div>
                 </div>
             </div>
             }
         </div>
-    )
-}
+    );
+};
 
 const InputFormLayout = (props) => {
     // material classes
@@ -114,7 +127,7 @@ const InputFormLayout = (props) => {
                 {props.options}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export {InputFormLayout, MainBodyLayout}
+export {InputFormLayout, MainBodyLayout};

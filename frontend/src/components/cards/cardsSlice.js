@@ -1,173 +1,172 @@
 import { createSlice, createAsyncThunk,
-        createEntityAdapter, createSelector
-    } from '@reduxjs/toolkit'
-import {apiFecthResource} from '../../api/api'
-import {removeCardFromDecks, updateCardInDeck} from '../decks/deckSlice'
+    createEntityAdapter, createSelector
+} from "@reduxjs/toolkit";
+import {apiFecthResource} from "../../api/api";
+import {removeCardFromDecks, updateCardInDeck} from "../decks/deckSlice";
 
 const cardsAdapter = createEntityAdapter({
     // Assume IDs are stored in a field other than `book.id`
     selectId: (card) => card.id,
     // Keep the "all IDs" array sorted based on book titles
     sortComparer: (a, b) => a.created.localeCompare(b.created),
-})
+});
 
 const initialState = cardsAdapter.getInitialState({
-    loading: 'idle',
-    status: 'stale',
+    loading: "idle",
+    status: "stale",
     error: {
         isErrored: false,
-        message: '',
+        message: "",
     }
-})
+});
 
-export const fetchCards = createAsyncThunk('cards/fetchCards', async (params, {dispatch, rejectWithValue}) => {
+export const fetchCards = createAsyncThunk("cards/fetchCards", async (params, { rejectWithValue}) => {
 
     let response;
     try {
 
-        let url = `notes/`
+        let url = "notes/";
         response = await apiFecthResource.get(url);
         return response.data;
 
     } catch (err) {
         if (err.response) {
             // The request was made and the server responded with a status code out of the range of 2xx
-            return rejectWithValue({message: 'Invalid Request was made'})
+            return rejectWithValue({non_field_errors: "Invalid Request was made"});
 
         } else if (err.request) {
             // The request was made but no response was received
-            return rejectWithValue({message: 'No Response recieved from server'})
+            return rejectWithValue({non_field_errors:"Unable to reach server"});
         }
     }
-})
+});
 
-export const addNewCard = createAsyncThunk('cards/addNewCard', async (params, {getState, dispatch, rejectWithValue}) => {
+export const addNewCard = createAsyncThunk("cards/addNewCard", async (params, { dispatch, rejectWithValue}) => {
 
     let response;
     try {
-        response = await apiFecthResource.post('notes/', params)
-        dispatch(updateCardInDeck({newCard: response.data, type: 'create'}))
+        response = await apiFecthResource.post("notes/", params);
+        dispatch(updateCardInDeck({newCard: response.data, type: "create"}));
         return response.data;
 
     } catch (err) {
         if (err.response) {
             // The request was made and the server responded with a status code out of the range of 2xx
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.response.data);
 
         } else if (err.request) {
             // The request was made but no response was received
-            return rejectWithValue(err.request)
+            return rejectWithValue({non_field_errors:"Unable to reach server"});
         }
     }
-})
+});
 
-export const removeCard = createAsyncThunk('cards/removeCard', async (params, {getState, dispatch, rejectWithValue}) => {
+export const removeCard = createAsyncThunk("cards/removeCard", async (params, {getState, dispatch, rejectWithValue}) => {
 
-    let response;
     try {
-        let url = `notes/${params}/`
-        response = await apiFecthResource.remove(url)
-        const {cards} = getState()
-        let deletedCard = cards.entities[params]
-        dispatch(removeCardFromDecks({delCard: deletedCard}))
-        return params
+        let url = `notes/${params}/`;
+        await apiFecthResource.remove(url);
+        const {cards} = getState();
+        let deletedCard = cards.entities[params];
+        dispatch(removeCardFromDecks({delCard: deletedCard}));
+        return params;
 
     } catch (err) {
         if (err.response) {
             // The request was made and the server responded with a status code out of the range of 2xx
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.response.data);
 
         } else if (err.request) {
             // The request was made but no response was received
-            return rejectWithValue(err.request)
+            return rejectWithValue({non_field_errors:"Unable to reach server"});
         }
     }
-})
+});
 
-export const editCard = createAsyncThunk('cards/editCard', async (params, {dispatch, getState, rejectWithValue}) => {
+export const editCard = createAsyncThunk("cards/editCard", async (params, {dispatch, getState, rejectWithValue}) => {
 
     let response;
     const {id, requestBody} = params;
     try {
-        let url = `notes/${id}/`
-        response = await apiFecthResource.edit(url, requestBody)
-        const {cards} = getState()
-        let prevCard = cards.entities[id]
-        dispatch(updateCardInDeck({prevCard, newCard: response.data, type: 'update'}))
+        let url = `notes/${id}/`;
+        response = await apiFecthResource.edit(url, requestBody);
+        const {cards} = getState();
+        let prevCard = cards.entities[id];
+        dispatch(updateCardInDeck({prevCard, newCard: response.data, type: "update"}));
         return response.data;
 
     } catch (err) {
         if (err.response) {
             // The request was made and the server responded with a status code out of the range of 2xx
 
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.response.data);
 
         } else if (err.request) {
             // The request was made but no response was received
-            return rejectWithValue(err.request)
+            return rejectWithValue({non_field_errors:"Unable to reach server"});
         }
     }
-})
+});
 
-export const searchCards = createAsyncThunk('cards/searchCards', async (params, {dispatch, getState, rejectWithValue}) => {
+export const searchCards = createAsyncThunk("cards/searchCards", async (params, { rejectWithValue}) => {
 
     let response;
     try {
-        let url = `search/`
-        response = await apiFecthResource.get(url, params)
+        let url = "search/";
+        response = await apiFecthResource.get(url, params);
         return response.data;
 
     } catch (err) {
         if (err.response) {
             // The request was made and the server responded with a status code out of the range of 2xx
 
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.response.data);
 
         } else if (err.request) {
             // The request was made but no response was received
-            return rejectWithValue(err.request)
+            rejectWithValue({non_field_errors:"Unable to reach server"});
         }
     }
-})
+});
 
 const cardsSlice = createSlice({
-    name: 'cards',
+    name: "cards",
     initialState,
     reducers: {
-        clearCards(state, action) {
-            cardsAdapter.removeAll(state)
-            state.status = 'stale'
+        clearCards(state) {
+            cardsAdapter.removeAll(state);
+            state.status = "stale";
         },
-        setStale(state, action) {
-            state.status = 'stale'
+        setStale(state) {
+            state.status = "stale";
         }
     },
     extraReducers: {
-        [fetchCards.pending]: (state, action) => {
-            state.loading = 'loading'
+        [fetchCards.pending]: (state) => {
+            state.loading = "loading";
         },
         [fetchCards.fulfilled]: (state, action) => {
-            cardsAdapter.upsertMany(state, action.payload)
-            state.loading = 'loaded'
-            state.status = 'updated'
+            cardsAdapter.upsertMany(state, action.payload);
+            state.loading = "loaded";
+            state.status = "updated";
         },
         [addNewCard.fulfilled]: (state, action) => {
-            cardsAdapter.addOne(state, action.payload)
+            cardsAdapter.addOne(state, action.payload);
         },
         [editCard.fulfilled]: (state, action) => {
             const updObj = {
-                id: action.payload['id'],
+                id: action.payload["id"],
                 changes: {
                     ...action.payload
                 }
-            }
-            cardsAdapter.updateOne(state, updObj)
+            };
+            cardsAdapter.updateOne(state, updObj);
         },
         [removeCard.fulfilled]: (state, action) => {
-            cardsAdapter.removeOne(state, action.payload)
+            cardsAdapter.removeOne(state, action.payload);
         },
-        [fetchCards.rejected]: (state, action) => {
-            state.loading = 'failed'
+        [fetchCards.rejected]: (state) => {
+            state.loading = "failed";
         },
     }
 });
@@ -187,10 +186,10 @@ export const selectCardsStatus = (state) => state.cards.status;
 export const selectCardsLoadingStatus = createSelector(
     [selectAllCards],
     (cards) => cards.loading
-)
+);
 export const selectDecksByCardId = createSelector(
     [selectAllCards, (state, cardId) => cardId],
     (cards, cardId) => cards[cardId].notebook
-)
+);
 
-export default cardsSlice.reducer
+export default cardsSlice.reducer;

@@ -8,9 +8,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import LogoComponent from './LogoComponent'
 import {useAuth} from '../../api/api'
 import {useDispatch} from 'react-redux'
-import {fetchCards} from '../cards/cardsSlice'
-import {fetchDecks} from '../decks/deckSlice'
 import AccountNavButton from './AccountNavButton'
+import LogoutButton from './LogoutButton'
 import SearchForm from './SearchForm'
 import NavButton from './NavButton'
 import SideDrawer from './SideDrawer'
@@ -170,11 +169,6 @@ const HeaderBar = (props) => {
         setOpen(false);
     };
 
-    const handleTestClick = () => {
-        dispatch(fetchCards())
-        dispatch(fetchDecks())
-    }
-
     const drawerProps = {
         open,
         handleDrawerClose,
@@ -214,7 +208,8 @@ const HeaderBar = (props) => {
                     </div>                    
                     <div className={classes.grow} />
                     <div className={classes.sectionMobile}>
-                        <SearchForm className={classes.search}/>
+                        <DarkModeSwitch/>
+                        <LogoutButton className={classes.navButton}/>
                     </div>
                     <div className={classes.sectionDesktop}>
                         <DarkModeSwitch/>

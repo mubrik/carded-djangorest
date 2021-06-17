@@ -1,10 +1,10 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect} from "react";
 
-const axios = require('axios');
+const axios = require("axios");
 
 // axios instance with base url
 const axiosInstance = axios.create({
-    baseURL: 'backend/',
+    baseURL: "backend/",
     timeout: 5000,
 });
 
@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 const createTokenProvider = () => {
 
     /* Implementation */
-    let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH'))
+    let token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH"));
 
     /* observer/subscriber list  */
     let observers = [];
@@ -52,9 +52,9 @@ const createTokenProvider = () => {
     const setToken = (_token=null) => {
 
         if (_token) {
-            localStorage.setItem('REACT_TOKEN_AUTH', JSON.stringify(_token));
+            localStorage.setItem("REACT_TOKEN_AUTH", JSON.stringify(_token));
         } else {
-            localStorage.removeItem('REACT_TOKEN_AUTH');
+            localStorage.removeItem("REACT_TOKEN_AUTH");
         }
         token = _token;
         notify();
@@ -108,72 +108,72 @@ const createAuthProvider = () => {
 
         const prepareHeader = async () => {
 
-            const tokenObj = await tokenProvider.getToken()
-            let token = `Token ${tokenObj ? tokenObj['key'] : ''}`
+            const tokenObj = await tokenProvider.getToken();
+            let token = `Token ${tokenObj ? tokenObj["key"] : ""}`;
 
-            axiosInstance.defaults.headers.common['Authorization'] = token
-            axiosInstance.defaults.headers.common['Accept'] = 'application/json'
-        }
+            axiosInstance.defaults.headers.common["Authorization"] = token;
+            axiosInstance.defaults.headers.common["Accept"] = "application/json";
+        };
 
         const get = async (url, data) => {
-            await prepareHeader()
-            let response
+            await prepareHeader();
+            let response;
             if (data) {
-                response = await axiosInstance.get(url, {params: data})
-                return response
+                response = await axiosInstance.get(url, {params: data});
+                return response;
             }
-            response = await axiosInstance.get(url)
-            return response
-        }
+            response = await axiosInstance.get(url);
+            return response;
+        };
 
         const post = async (url, data) => {
-            await prepareHeader()
-            let response = await axiosInstance.post(url, data)
-            return response
-        }
+            await prepareHeader();
+            let response = await axiosInstance.post(url, data);
+            return response;
+        };
         
         const remove = async (url, data) => {
-            await prepareHeader()
-            let response = await axiosInstance.delete(url, data)
-            return response
-        }
+            await prepareHeader();
+            let response = await axiosInstance.delete(url, data);
+            return response;
+        };
         
         const edit = async (url, data) => {
-            await prepareHeader()
-            let response = await axiosInstance.put(url, data)
-            return response
-        }
+            await prepareHeader();
+            let response = await axiosInstance.put(url, data);
+            return response;
+        };
 
         const getCookie = (name) => {
             let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
                 for (let i = 0; i < cookies.length; i++) {
                     const cookie = cookies[i].trim();
                     // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                         break;
                     }
                 }
             }
             return cookieValue;
-        }
+        };
 
-        return {get, post, remove, edit, getCookie}
-    }
+        return {get, post, remove, edit, getCookie};
+    };
 
-    const apiFecthResource = server()
+    const apiFecthResource = server();
 
     return {
         useAuth,
         apiFecthResource,
         login,
         logout
-    }
+    };
 };
 
-const tokenProvider = createTokenProvider()
+const tokenProvider = createTokenProvider();
 
 export {tokenProvider};
 export const {login, logout, useAuth, apiFecthResource} = createAuthProvider();

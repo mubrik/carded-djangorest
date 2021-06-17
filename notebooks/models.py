@@ -24,11 +24,6 @@ class NoteBook(TimeStampedModel):
     def __str__(self):
         return f'notebook: {self.name}'
 
-    @property
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of the model."""
-        return reverse('notebook_detail', args=[str(self.id)])
-
     def note_urls(self):
         return [note.get_absolute_url for note in self.notebook_notes.all()]
 
