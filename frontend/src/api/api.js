@@ -4,7 +4,7 @@ const axios = require("axios");
 
 // axios instance with base url
 const axiosInstance = axios.create({
-    baseURL: "backend/",
+    baseURL: "/backend/",
     timeout: 5000,
 });
 
@@ -110,7 +110,6 @@ const createAuthProvider = () => {
 
             const tokenObj = await tokenProvider.getToken();
             let token = `Token ${tokenObj ? tokenObj["key"] : ""}`;
-
             axiosInstance.defaults.headers.common["Authorization"] = token;
             axiosInstance.defaults.headers.common["Accept"] = "application/json";
         };

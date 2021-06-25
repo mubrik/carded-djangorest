@@ -1,21 +1,17 @@
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import { Button, TextField } from "@material-ui/core";
 import newCardStyles from "./newCardStyles";
+import DeckCustomSelect from "./CustomDeckSelect";
 import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
 import {addNewCard} from "./cardsSlice";
-import {selectAllDecks} from "../decks/deckSlice";
-import {useCreateDeck} from "../hooks/customHooks";
 
 const AddCardForm = () => {
 
     const dispatch = useDispatch();
-    const allDecksList = useSelector(selectAllDecks);
     // material
     const classes = newCardStyles();
-    // custom hook
-    const tabledDeck = useCreateDeck(allDecksList);
     // notification
     const { enqueueSnackbar } = useSnackbar();
     // formik
@@ -24,17 +20,18 @@ const AddCardForm = () => {
             title: "",
             content: "",
             selectedDeck: [],
-            allDeck: tabledDeck
         },
         onSubmit:(values) => {
             // Do stuff here...
-            const {title, content, selectedDeck} = values;
-            /* alert(JSON.stringify(values, null, 3)); */
+            const {title, content, selectedDeck: notebook} = values;
             const requestBody = {
                 title,
                 content,
-                notebook: selectedDeck,
+                notebook,
             };
+            if (requestBody.title === "") {
+                delete requestBody.title;
+            }
             dispatch(addNewCard(requestBody))
                 .then((result) => {
                     if (result.meta.requestStatus === "fulfilled") {
@@ -69,7 +66,7 @@ const AddCardForm = () => {
                         multiline
                         fullWidth
                         margin={"dense"}
-                        rows={3}
+                        rows={10}
                         name="content"
                         id="cardContent"
                         label="Content"
@@ -78,13 +75,15 @@ const AddCardForm = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                     />
-                    {/* <InputBase 
-                        name='selectedDeck'
-                        data={formik.values.allDeck}
-                        inputComponent={MyCustomSelect}
-                    /> */}
-                    <Button variant="contained" color="secondary" onClick={formik.handleSubmit}>
-                        New Card
+                    <DeckCustomSelect formik={formik}/>
+                    <Button 
+                        variant="contained" 
+                        color="secondary" 
+                        margin={"dense"}
+                        onClick={formik.handleSubmit}
+                        disabled={!formik.dirty}
+                    >
+                        Create Card
                     </Button>
                 </form>
             </div>
@@ -92,4 +91,56 @@ const AddCardForm = () => {
     );
 };
 
+
+/* const CustomSelect = ({formik, defaultArr}) => {
+
+    const allDecksList = useSelector(selectAllDecks);
+    
+    const handleChange = (event, optionArray, reason) => {
+        
+        switch (reason) {
+        case "select-option": {
+            let arr = optionArray.map(deck => deck.id);
+            formik.setFieldValue("selectedDeck", arr, false);
+            break;
+        } 
+        case "remove-option":{
+            let arr = optionArray.map(deck => deck.id);
+            formik.setFieldValue("selectedDeck", arr, false);
+            break;
+        }
+        
+        case "clear":{
+            formik.setFieldValue("selectedDeck", [], false);
+            break;
+        }
+        
+        default:
+            break;
+        }
+    };
+
+    return(
+        <Autocomplete
+            multiple
+            freeSolo
+            fullWidth
+            autoComplete={true}
+            margin={"dense"}
+            id="tags-filled"
+            options={allDecksList}
+            defaultValue={defaultArr ? defaultArr : []}
+            getOptionLabel={option => option.name}
+            renderTags={(deckList, getTagProps) =>
+                deckList.map((deck, index) => (
+                    <Chip variant="outlined" label={deck.name} key={deck.id} {...getTagProps({ index })} />
+                ))
+            }
+            renderInput={(params) => (
+                <TextField {...params} margin={"dense"} label="Select Deck" placeholder="..." />
+            )}
+            onChange={handleChange}
+        />
+    );
+}; */
 export default AddCardForm;

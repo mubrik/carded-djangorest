@@ -4,12 +4,6 @@ from rest_framework.serializers import HyperlinkedRelatedField
 from notes.models import Note
 from notebooks.models import NoteBook
 
-class CustomNoteBooksSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = NoteBook
-        fields = ['id','name', 'created']
-
 class NoteSerializer(serializers.HyperlinkedModelSerializer):
     created_by = serializers.ReadOnlyField(source='created_by.username')
     created = serializers.DateTimeField(format='%c', read_only=True)

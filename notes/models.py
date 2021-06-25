@@ -10,7 +10,7 @@ UserModel = get_user_model()
 
 def title_default():
     """ creates a default title for notes, implement further """
-    return "Untitled Note"
+    return "Untitled Card"
 
 class Note(TimeStampedModel):
     ''' subclass of time stamped model, includes a created and modified field 

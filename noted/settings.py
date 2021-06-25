@@ -58,6 +58,7 @@ else:
 print(DEBUG)
 ALLOWED_HOSTS = [
     'carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com',
+    'carded.mubrik.com',
     '127.0.0.1',
 ]
 

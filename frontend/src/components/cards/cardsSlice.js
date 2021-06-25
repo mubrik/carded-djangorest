@@ -85,11 +85,11 @@ export const removeCard = createAsyncThunk("cards/removeCard", async (params, {g
 
 export const editCard = createAsyncThunk("cards/editCard", async (params, {dispatch, getState, rejectWithValue}) => {
 
-    let response;
-    const {id, requestBody} = params;
+    
     try {
+        const {id, requestBody} = params;
         let url = `notes/${id}/`;
-        response = await apiFecthResource.edit(url, requestBody);
+        let response = await apiFecthResource.edit(url, requestBody);
         const {cards} = getState();
         let prevCard = cards.entities[id];
         dispatch(updateCardInDeck({prevCard, newCard: response.data, type: "update"}));
@@ -98,7 +98,7 @@ export const editCard = createAsyncThunk("cards/editCard", async (params, {dispa
     } catch (err) {
         if (err.response) {
             // The request was made and the server responded with a status code out of the range of 2xx
-
+            console.log(err.response);
             return rejectWithValue(err.response.data);
 
         } else if (err.request) {
