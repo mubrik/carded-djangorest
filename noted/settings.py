@@ -32,6 +32,7 @@ DEBUG = False
 # SECURITY WARNING: don't run with debug turned on in production!
 if 'RDS_DB_NAME' in os.environ:
     DEBUG = False
+    SECURE_SSL_REDIRECT = True
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
