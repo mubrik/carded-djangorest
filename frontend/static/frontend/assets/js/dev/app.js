@@ -34340,9 +34340,8 @@ var ConfirmPasswordResetForm = function ConfirmPasswordResetForm() {
   // react-router
   var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useParams)(),
       uid = _useParams.uid,
-      token = _useParams.token;
+      token = _useParams.token; // redux
 
-  var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useHistory)(); // redux
 
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(); // formik
 
@@ -34721,7 +34720,7 @@ var GoogleAuthButton = function GoogleAuthButton(_ref) {
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement((react_google_login__WEBPACK_IMPORTED_MODULE_8___default()), {
     clientId: "225063154787-g0p5ukj9irp5ak4i74nvcolf7hk7mdki.apps.googleusercontent.com",
-    cookiePolicy: "http://localhost:8000",
+    cookiePolicy: "single_host_origin",
     onSuccess: handleSuccessLogin,
     onFailure: handleFailureLogin,
     render: function render(renderProps) {

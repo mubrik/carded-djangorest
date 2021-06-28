@@ -1,6 +1,6 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import {useParams, useHistory} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import { useFormik  } from "formik";
 import {TextField, Button, Typography } from "@material-ui/core";
 import {confirmPasswordReset} from "./userSlice";
@@ -9,7 +9,6 @@ const ConfirmPasswordResetForm = () => {
 
     // react-router
     const { uid, token  } = useParams();
-    const history = useHistory();
     // redux
     const dispatch = useDispatch();
 

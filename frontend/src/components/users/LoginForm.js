@@ -160,7 +160,7 @@ const GoogleAuthButton = ({backdrop}) => {
     return(
         <GoogleLogin
             clientId={"225063154787-g0p5ukj9irp5ak4i74nvcolf7hk7mdki.apps.googleusercontent.com"}
-            cookiePolicy={"http://localhost:8000"}
+            cookiePolicy={"single_host_origin"}
             onSuccess={handleSuccessLogin}
             onFailure={handleFailureLogin}
             render={renderProps => (
