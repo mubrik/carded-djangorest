@@ -131,6 +131,8 @@ const ProfilePage = () => {
 const ProfileAvatar = () => {
     // material
     const classes = useStyles();
+    // upload button status
+    const [disabled, setDisabled] = React.useState(true);
     // redux
     const dispatch = useDispatch();
     const avatarLink = useSelector(selectUserProfilePic);
@@ -142,6 +144,7 @@ const ProfileAvatar = () => {
             profile_picture: null,
         },
         onSubmit: (values, formikBag) => {
+            setDisabled(true);
             const formData = new FormData();
             formData.append("profile_picture", values["profile_picture"]);
             dispatch(editProfileData(formData))
@@ -177,6 +180,7 @@ const ProfileAvatar = () => {
                     className={classes.input_file}
                     onChange={(event) => {
                         formik.setFieldValue("profile_picture", event.currentTarget.files[0]);
+                        setDisabled(false);
                     }}
                 />
                 <Avatar alt="ao brrr" src={avatarLink} className={classes.ProfileAvatarImg} />
@@ -191,7 +195,7 @@ const ProfileAvatar = () => {
                         color="default" 
                         size="small" 
                         onClick={formik.handleSubmit}
-                        disabled={formik.isSubmitting}
+                        disabled={ disabled || formik.isSubmitting}
                     >
                         Update Avatar
                     </Button>

@@ -35,6 +35,31 @@ export const userLogin = createAsyncThunk("auth/userLogin", async (passedArgs, {
     
 });
 
+export const userSocialLogin = createAsyncThunk("auth/userGoogleLogin", async (passedArgs, {dispatch, rejectWithValue }) => {
+
+    
+    try {
+        const {url, ...rest} = passedArgs;
+        let response = await axios.post(url, rest);
+        dispatch(setAuthToken(response.data));
+        login(response.data);
+        dispatch(fetchUserData());
+        return response.data;
+
+    } catch (err) {
+        if (err.response) {
+            // The request was made and the server responded with a status code out of the range of 2xx
+            console.log(err.response.data);
+            return rejectWithValue(err.response.data);
+
+        } else if (err.request) {
+            // The request was made but no response was received
+            return rejectWithValue({non_field_errors:"Unable to reach server"});
+        }
+    }
+    
+});
+
 export const userLogout = createAsyncThunk("auth/userLogout", async (passedArgs, { dispatch }) => {
     await apiFecthResource.post("dj-rest-auth/logout/");
     logout();

@@ -61,6 +61,7 @@ ALLOWED_HOSTS = [
     'carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com',
     'carded.mubrik.com',
     '127.0.0.1',
+    'localhost'
 ]
 
 # User model to be used
@@ -78,6 +79,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -188,7 +190,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 
 # dj auth
-OLD_PASSWORD_FIELD_ENABLED = True
+OLD_PASSWORD_FIELD_ENABLED = False
 
 """ 'rest_framework.authentication.SessionAuthentication',
     'DEFAULT_PAGINATION_CLASS': 'notes.api.pagination.CustomPagination',
@@ -234,6 +236,16 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         }
     },
+    'github': {
+        'APP': {
+            'client_id': os.environ.get('CARD_GITID'),
+            'secret': os.environ.get('CARD_GITSECRET'),
+        },
+        'SCOPE': [
+            'user',
+            'repo'
+        ],
+    }
 }
 
 # adds aws elb private ip to allowed hosts

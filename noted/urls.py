@@ -11,7 +11,7 @@ from .api.viewsets import SearchQueryView
 from notes.api.viewsets import NoteViewset
 from notebooks.api.viewsets import NoteBookViewset
 from userauth.api.viewsets import UserViewSet
-from userauth.api.social_auth import GoogleLogin
+from userauth.api.social_auth import GoogleLogin, GithubLogin
 from profiles.api.viewsets import ProfileViewSet
 
 router = DefaultRouter()
@@ -23,6 +23,7 @@ router.register(r'profiles', ProfileViewSet, basename='profile')
 urlpatterns = [
     path('admin-page', admin.site.urls),
     path('health/', include('health_check.urls')),
+    path('accounts/', include('allauth.urls')),
     path('backend/password-reset/confirm/<uidb64>/<token>/',
         TemplateView.as_view(template_name="password_reset_confirm.html"),
         name='password_reset_confirm'),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('backend/dj-rest-auth/', include('dj_rest_auth.urls')),
     path('backend/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('backend/dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
+    path('backend/dj-rest-auth/github/', GithubLogin.as_view(), name='github_login'),
     path(
         'backend/socialaccounts/',
         SocialAccountListView.as_view(),

@@ -151,6 +151,7 @@ cython_debug/
 # files i need hidden
 .unregister/
 staticfiles/
+oauth2.keys.json
 
 #pyright
 pyrightconfig.json

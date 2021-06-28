@@ -1,72 +1,74 @@
-import React from 'react'
-import clsx from 'clsx';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import LogoComponent from './LogoComponent'
-import {useAuth} from '../../api/api'
-import {useDispatch} from 'react-redux'
-import AccountNavButton from './AccountNavButton'
-import LogoutButton from './LogoutButton'
-import SearchForm from './SearchForm'
-import NavButton from './NavButton'
-import SideDrawer from './SideDrawer'
-import MobileHeaderDropdown from './MobileHeaderDropdown'
-import DarkModeSwitch from './DarkModeSwitch'
+import React from "react";
+import clsx from "clsx";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import LogoComponent from "./LogoComponent";
+import {useAuth} from "../../api/api";
+import AccountNavButton from "./AccountNavButton";
+import LogoutButton from "./LogoutButton";
+import SearchForm from "./SearchForm";
+import NavButton from "./NavButton";
+import SideDrawer from "./SideDrawer";
+import MobileHeaderDropdown from "./MobileHeaderDropdown";
+import DarkModeSwitch from "./DarkModeSwitch";
 
 const drawerWidth = 180;
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        minHeight: '100vh',
+        display: "flex",
+        minHeight: "100vh",
         fontSize: theme.typography.fontSize,
         fontFamily: theme.typography.fontFamily,
         fontWeight: theme.typography.fontWeightLight,
-        backgroundColor: theme.palette.background.default,
+        background: `linear-gradient(
+            180deg,
+            ${theme.palette.background.default} 52%,
+            ${theme.palette.secondary.main}f5 300%)`,
         color: theme.palette.text.primary
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
-        transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        transition: theme.transitions.create(["width", "margin"], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
         }),
     },
     appBarShift: {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        transition: theme.transitions.create(["width", "margin"], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
         }),
     },
     menuButton: {
         marginRight: 24,
     },
     hide: {
-        display: 'none',
+        display: "none",
     },
     drawerOpen: {
         width: drawerWidth,
-        transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
         }),
     },
     drawerClose: {
-        transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
         }),
-        overflowX: 'hidden',
+        overflowX: "hidden",
         width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        [theme.breakpoints.up("sm")]: {
+            width: theme.spacing(9) + 1,
         },
     },
     grow: {
@@ -74,16 +76,16 @@ const useStyles = makeStyles((theme) => ({
         flexShrink: 1,
     },
     headerImg: {
-        display: 'none',
-        height: '34px',
-        [theme.breakpoints.up('sm')]: {
-          display: 'block',
+        display: "none",
+        height: "34px",
+        [theme.breakpoints.up("sm")]: {
+            display: "block",
         }
     },
     toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
         padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
@@ -92,59 +94,59 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
     },
     search: {
-        position: 'relative',
+        position: "relative",
         borderRadius: theme.shape.borderRadius,
         backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-          backgroundColor: fade(theme.palette.common.white, 0.25),
+        "&:hover": {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-          marginLeft: theme.spacing(2),
-          width: 'auto',
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: theme.spacing(2),
+            width: "auto",
         },
     },
     sectionDesktop: {
-        display: 'none',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-          display: 'flex',
+        display: "none",
+        alignItems: "center",
+        [theme.breakpoints.up("md")]: {
+            display: "flex",
         },
     },
     sectionMobile: {
-        display: 'flex',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-          display: 'none',
+        display: "flex",
+        alignItems: "center",
+        [theme.breakpoints.up("md")]: {
+            display: "none",
         },
     },
     title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-          display: 'block',
+        display: "none",
+        [theme.breakpoints.up("sm")]: {
+            display: "block",
         }
     },
     content: {
         flexGrow: 1,
-        transition: theme.transitions.create('margin', {
+        transition: theme.transitions.create("margin", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: -drawerWidth,
     },
     contentShift: {
-        transition: theme.transitions.create('margin', {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
+        transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
         }),
         marginLeft: 0,
     },
     wrapperMain: {
         minHeight: `calc(97vh - ${theme.mixins.toolbar.minHeight}px)`,
-        position: 'relative;',
-        padding: '.5em .5em;',
+        position: "relative;",
+        padding: ".5em .5em;",
     }
 }));
 
@@ -152,8 +154,6 @@ const HeaderBar = (props) => {
 
     // main body
     const {mainBody} = props;
-    // redux
-    const dispatch = useDispatch();
     // auth 
     const isAuthenticated = useAuth();
     // material classes
@@ -173,37 +173,37 @@ const HeaderBar = (props) => {
         open,
         handleDrawerClose,
         isAuthenticated
-    }
+    };
 
     return (
         <div className={classes.root}>
-        <AppBar
-            position="fixed"
-            className={clsx(classes.appBar, {
-                [classes.appBarShift]: open,
-            })}
-        >
-            <Toolbar variant="dense">
-                <IconButton
-                    color="secondary"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(classes.menuButton, {
-                        [classes.hide]: open,
-                    })}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <LogoComponent/>
-                { isAuthenticated && 
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: open,
+                })}
+            >
+                <Toolbar variant="dense">
+                    <IconButton
+                        color="secondary"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(classes.menuButton, {
+                            [classes.hide]: open,
+                        })}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <LogoComponent/>
+                    { isAuthenticated && 
                 <>
                     <div className={classes.sectionMobile}>
                         <MobileHeaderDropdown isAuthenticated={isAuthenticated}/>
                     </div>
                     <div className={classes.sectionDesktop}>
-                        <NavButton icon={'card'} to={'/cards'} primary={'Cards'}/>
-                        <NavButton icon={'deck'} to={'/deck'} primary={'Decks'}/>
+                        <NavButton icon={"card"} to={"/cards"} primary={"Cards"}/>
+                        <NavButton icon={"deck"} to={"/deck"} primary={"Decks"}/>
                         <SearchForm className={classes.search}/>
                     </div>                    
                     <div className={classes.grow} />
@@ -216,32 +216,39 @@ const HeaderBar = (props) => {
                         <AccountNavButton className={classes.navButton}/>
                     </div>
                 </>
-                }
-                { !isAuthenticated && 
+                    }
+                    { !isAuthenticated && 
                 <>
                     <div className={classes.sectionMobile}>
                         <MobileHeaderDropdown isAuthenticated={isAuthenticated}/>
                     </div>
                     <div className={classes.sectionDesktop}>
-                        <NavButton icon={'card'} to={'/login'} primary={'Login'}/>
-                        <NavButton icon={'deck'} to={'/signup'} primary={'Register'}/>
+                        <NavButton icon={"card"} to={"/login"} primary={"Login"}/>
+                        <NavButton icon={"deck"} to={"/signup"} primary={"Register"}/>
+                        <NavButton icon={"deck"} to={"/about"} primary={"About"}/>
                     </div>                    
                     <div className={classes.grow} />
+                    <div className={classes.sectionMobile}>
+                        <DarkModeSwitch/>
+                    </div>
+                    <div className={classes.sectionDesktop}>
+                        <DarkModeSwitch/>
+                    </div>
                 </>
-                }
-            </Toolbar>
-        </AppBar>
-        <SideDrawer {...drawerProps}/>
-        <main className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}>
-            <div className={classes.toolbar} />
-            <div className={classes.wrapperMain}>
-                {mainBody}
-            </div>
-        </main>
+                    }
+                </Toolbar>
+            </AppBar>
+            <SideDrawer {...drawerProps}/>
+            <main className={clsx(classes.content, {
+                [classes.contentShift]: open,
+            })}>
+                <div className={classes.toolbar} />
+                <div className={classes.wrapperMain}>
+                    {mainBody}
+                </div>
+            </main>
         </div>
     );    
-}
+};
 
 export default HeaderBar;

@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-evenly"
     },
     topMargin: {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1.5)
     },
     cancelButton: {
         margin: theme.spacing(1),
@@ -102,7 +102,7 @@ const PasswordChangeForm = () => {
     // formik
     const formik = useFormik({
         initialValues: {
-            old_password: "",
+            /* old_password: "", */
             new_password1: "",
             new_password2: ""
         },
@@ -113,13 +113,14 @@ const PasswordChangeForm = () => {
                         enqueueSnackbar("Password Updated Successfully", { 
                             variant: "success",
                         });
+                        formikBag.resetForm();
                     } else {
                         const {
-                            old_password, new_password1,
+                            /* old_password */ new_password1,
                             new_password2, non_field_errors
                         } = result.payload;
                         formikBag.setErrors({
-                            old_password: old_password ? old_password.toString(): "",
+                            /* old_password: old_password ? old_password.toString(): "", */
                             new_password1: new_password1 ? new_password1.toString(): "",
                             new_password2: new_password2 ? new_password2.toString(): "",
                             non_field_errors: non_field_errors ? non_field_errors.toString(): "",
@@ -132,7 +133,7 @@ const PasswordChangeForm = () => {
                 });
         },
         validationSchema: Yup.object({
-            old_password: Yup.string().required("Required"),
+            /* old_password: Yup.string().required("Required"), */
             new_password1: Yup.string().required("Required"),
             new_password2: Yup.string().required("Required"),
         })
@@ -141,7 +142,7 @@ const PasswordChangeForm = () => {
     return(
         <>
             <form className={classes.profileCard} onSubmit={formik.handleSubmit}>
-                <TextField
+                {/* <TextField
                     id="filled-old_password-input"
                     name="old_password"
                     label="Old Password"
@@ -155,7 +156,7 @@ const PasswordChangeForm = () => {
                     value={formik.values.old_password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                />
+                /> */}
                 <TextField
                     id="filled-new_password1-input"
                     name="new_password1"

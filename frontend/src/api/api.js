@@ -5,7 +5,7 @@ const axios = require("axios");
 // axios instance with base url
 const axiosInstance = axios.create({
     baseURL: "/backend/",
-    timeout: 5000,
+    timeout: 7000,
 });
 
 //token handler for managing token auth, unexposed

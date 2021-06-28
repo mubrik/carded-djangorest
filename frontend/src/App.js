@@ -11,6 +11,7 @@ import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 import CustomSnackbarProvider from "./components/ui/SnackBarAlert";
 import LoginForm from "./components/users/LoginForm";
 import SignupForm from "./components/users/SignupForm";
+import AboutPage from "./components/ui/AboutPage";
 import CardList from "./components/cards/CardList";
 import AddCardForm from "./components/cards/AddCardForm";
 import EditCardForm from "./components/cards/EditCardForm";
@@ -120,6 +121,7 @@ function App() {
                             <Switch>
                                 <Route path="/login" render={() => <LoginForm/>}/>
                                 <Route path="/signup" render={() => <SignupForm/>}/>
+                                <Route path="/about" render={() => <AboutPage/>}/>
                                 <PrivateRoute path="/cards"><CardList/></PrivateRoute>
                                 <PrivateRoute path="/card/new"><AddCardForm/></PrivateRoute>
                                 <PrivateRoute path="/card/edit/:id"><EditCardForm/></PrivateRoute>
