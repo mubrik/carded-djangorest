@@ -219,7 +219,6 @@ const GithubAuthButton = () => {
             clientId={"03fa45fab73ccf9ff6dc"}
             onSuccess={handleSuccessLogin}
             onFailure={handleFailureLogin}
-            redirectUri={"http://localhost:8000/accounts/github/login/callback/"}
         />
     );
 };
