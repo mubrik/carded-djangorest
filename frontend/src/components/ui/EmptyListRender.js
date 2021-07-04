@@ -1,20 +1,20 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     emptyRoot: {
-        display: 'grid',
-        justifyContent: 'center',
-        width: '100%'
+        display: "grid",
+        justifyContent: "center",
+        width: "100%"
     },
     text: {
-        display: 'flex',
-        justifyContent: 'space-evenly'
+        display: "flex",
+        justifyContent: "space-evenly"
     },
     Icon: {
-        justifySelf: 'center',
+        justifySelf: "center",
     },
 }));
 
@@ -26,9 +26,9 @@ const EmptyListRender = (props) => {
     return(
         <div className={classes.emptyRoot}>
             <ArrowUpwardIcon fontSize="large" className={classes.Icon}/>
-            <Typography variant={'h4'}> {props.children} </Typography>
+            <Typography variant={"h4"}> {props.children} </Typography>
         </div>
-    )
-}
+    );
+};
 
 export default EmptyListRender;
