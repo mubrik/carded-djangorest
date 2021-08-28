@@ -149,6 +149,12 @@ db.sqlite3
 
 #js
 .eslintrc.js
+.babelrc
+package.json
+package-lock.json
+webpack.common.js
+webpack.config.development.js
+webpack.config.production.js
 
 # files i need hidden
 .unregister/
