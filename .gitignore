@@ -147,6 +147,9 @@ cython_debug/
 db.sqlite3
 *.pyc
 
+#js
+.eslintrc.js
+
 # files i need hidden
 .unregister/
 staticfiles/
