@@ -12,39 +12,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-from .settings_scripts import get_linux_ec2_private_ip
+from decouple import Csv, config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = Path.joinpath(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_URL = '/static/'
 WEBPACK_DEV_PATH = Path.joinpath(BASE_DIR, 'frontend/static/frontend/assets/js/dev/webpack-stats.json')
 WEBPACK_PRD_PATH = Path.joinpath(BASE_DIR, 'frontend/static/frontend/assets/js/prd/webpack-stats.json')
-""" STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage' """
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('CARDED_SECRET')
-DEBUG = False
+SECRET_KEY = config('CARDED_SECRET')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if 'RDS_DB_NAME' in os.environ:
-    DEBUG = False
-    SECURE_SSL_REDIRECT = True
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
-else:
-    DEBUG = True
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -55,14 +42,14 @@ else:
             'PORT': '5432',
         }
     }
+else:
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 
-print(DEBUG)
-ALLOWED_HOSTS = [
-    'carded-django-react-dev.eba-pakkkjup.eu-west-2.elasticbeanstalk.com',
-    'carded.mubrik.com',
-    '127.0.0.1',
-    'localhost'
-]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
 
 # User model to be used
 AUTH_USER_MODEL = 'userauth.User'
@@ -181,8 +168,8 @@ REST_FRAMEWORK = {
 # install boto3 and django-storages
 # storing media files
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_ACCESS_KEY_ID =  config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = 'carded-django'
 AWS_S3_REGION_NAME = 'eu-west-2'
 AWS_S3_OBJECT_PARAMETERS = {
@@ -224,8 +211,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': os.environ.get('CARD_GID'),
-            'secret': os.environ.get('CARD_GSECRET'),
+            'client_id': config('CARD_GID'),
+            'secret': config('CARD_GSECRET'),
             'key': ''
         },
         'SCOPE': [
@@ -238,8 +225,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'github': {
         'APP': {
-            'client_id': os.environ.get('CARD_GITID'),
-            'secret': os.environ.get('CARD_GITSECRET'),
+            'client_id': config('CARD_GITID'),
+            'secret': config('CARD_GITSECRET'),
         },
         'SCOPE': [
             'user',
@@ -248,29 +235,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# adds aws elb private ip to allowed hosts
-private_ip = get_linux_ec2_private_ip() if not DEBUG else None
-if private_ip:
-    ALLOWED_HOSTS.append(private_ip)
-
-
-# basic logging with file rotation
-if not DEBUG:
-    log_level = os.getenv('LOG_LEVEL', 'INFO')
-    handlers = dict(file={'class': 'logging.handlers.TimedRotatingFileHandler',
-                          'filename': os.getenv('LOG_FILE_PATH'),
-                          'when': 'midnight',
-                          'interval': 1,
-                          'backupCount': 1,
-                          'encoding': 'utf-8'})
-    loggers = dict(django=dict(level=log_level, handlers=['file']),
-                   myapp=dict(level=log_level, handlers=['file']))
-    LOGGING = dict(version=1,
-                   disable_existing_loggers=False,
-                   handlers=handlers,
-                   loggers=loggers)
-
 # sendgrid config
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = os.environ["SG_API_KEY"]
+SENDGRID_API_KEY = config("SG_API_KEY")
 SENDGRID_ECHO_TO_STDOUT = True
