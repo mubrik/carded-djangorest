@@ -43,10 +43,10 @@ if DEBUG:
         }
     }
 else:
-    if os.getenv("DATABASE_URL", None) is None:
+    if config('DATABASE_URL', default=False, cast=bool) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
-        'default': dj_database_url.parse(os.environ.get("DATABASE_URL")),
+        'default': dj_database_url.parse(config("DATABASE_URL")),
     }
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
