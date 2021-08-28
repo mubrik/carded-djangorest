@@ -29,6 +29,7 @@ WEBPACK_PRD_PATH = Path.joinpath(BASE_DIR, 'frontend/static/frontend/assets/js/p
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('CARDED_SECRET')
 DEBUG = config('DEBUG', default=False, cast=bool)
+print(config("DATABASE_URL"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if DEBUG:
@@ -43,8 +44,6 @@ if DEBUG:
         }
     }
 else:
-    if config('DATABASE_URL', default=False, cast=bool) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
         'default': dj_database_url.parse(config("DATABASE_URL")),
     }
